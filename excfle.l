@@ -1,4 +1,3 @@
-/* recognize tokens for the calculator and print them out */
 %{
 
 enum yytokentype {
