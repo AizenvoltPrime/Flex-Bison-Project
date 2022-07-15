@@ -1,5 +1,4 @@
 %{
-
 enum yytokentype {
     JSON_NUMBER = 258,
     JSON_STRING = 259,
@@ -8,12 +7,19 @@ enum yytokentype {
 int yylval;
 %}
 
-%%
+digit [0-9]
+integer {digit}+
+decimal {integer}?\.{digit}*
+scientific {decimal}{digit}[Ee][+-]?{integer}*
+number {integer}|{decimal}|{scientific}
+negative -{number}
 
-^[0-9]*(\.[0-9]*)?$ { yylval = atoi(yytext); return JSON_NUMBER; }
+%%
+^{number}$ { yylval = atoi(yytext); return JSON_NUMBER; }
+^{negative}$ { yylval = atoi(yytext); return JSON_NUMBER; }
 ^\"([0-9]|[A-Za-z]|.|\t)*\"$ { return JSON_STRING; }
-
 %%
+
 
 int main(int argc, char **argv)
 {
