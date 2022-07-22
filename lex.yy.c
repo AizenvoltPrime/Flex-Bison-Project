@@ -531,7 +531,9 @@ char *yytext;
 /**array_number_member ({number}{whitespace},({whitespace}{number})|({number}{whitespace},{whitespace}{number}))***/
 /*  r{3}ux  rrrux rrrrux rrrrrux */
 /*{array_multi} { return JSON_ARRAY_MULTI; }*/
-#line 6 "excfle.l"
+#line 5 "excfle.l"
+#include <ctype.h>
+#include <string.h>
 enum yytokentype {
     JSON_NUMBER = 258,
     POS_INTEGER = 259,
@@ -543,8 +545,8 @@ enum yytokentype {
 };
 int yylval;
 
-#line 547 "lex.yy.c"
-#line 548 "lex.yy.c"
+#line 549 "lex.yy.c"
+#line 550 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -764,9 +766,9 @@ YY_DECL
 		}
 
 	{
-#line 43 "excfle.l"
+#line 44 "excfle.l"
 
-#line 770 "lex.yy.c"
+#line 772 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -829,7 +831,7 @@ case 1:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 44 "excfle.l"
+#line 45 "excfle.l"
 { yylval = atoi(yytext); return POS_INTEGER; }
 	YY_BREAK
 case 2:
@@ -837,102 +839,169 @@ case 2:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 45 "excfle.l"
+#line 46 "excfle.l"
 { yylval = atoi(yytext); return JSON_NUMBER; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 46 "excfle.l"
+#line 47 "excfle.l"
 { return JSON_ARRAY; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 47 "excfle.l"
+#line 48 "excfle.l"
 {
+    char *insert = yytext;
+    char *temp = yytext;
     int length = strlen(yytext)+1;
     int position = 1;
-    int counter=0;
-    int i=0;
-    char *insert = yytext;
-    *insert++;
+    int inside_quotes_counter=0;
+    int consecutive_quotes_counter=0;
     int elements_count=0;
-    while (i==0)
+    int i=0;
+    int stop=0;
+    int temp_position;
+    if(*insert=='\"')
     {
-        printf("The char is %c\n",*insert);
-        if(*insert=='\\')
+        *insert++;
+        consecutive_quotes_counter++;
+        while (i==0)
         {
-            *insert++;
-            position++;
-            if(*insert=='\"')
+            printf("The char is %c\n",*insert);;
+            if(*insert=='\\')
             {
-                counter++;
                 *insert++;
                 position++;
+                if(*insert=='\"')
+                {
+                    inside_quotes_counter++;
+                    *insert++;
+                    position++;
+                }
+            }
+            if(*insert=='\"' && inside_quotes_counter == 0)
+            {
+                temp=insert;
+                temp_position=position;
+                while(1)
+                {
+                    *insert++;
+                    temp_position++;
+                    if(temp_position==length-1)
+                    {
+                        insert = temp;
+                        break;
+                    }
+                    else if(isspace(*insert))
+                    {
+                        continue;
+                    }
+                    else if(*insert==',')
+                    {
+                        insert = temp;
+                        break;
+                    }
+                    else
+                    {
+                        printf("ERROR\n");
+                        stop=1;
+                        break;
+                    }
+                }
+                
+                if(stop==1)
+                {
+                    break;
+                }
+                elements_count++;
+                printf("The string doesn't contains more strings\n");
+                if(position+3>length)
+                {
+                    printf("The number of elements is %d\n",elements_count);
+                    break;
+                }
+                else 
+                {
+                    *insert++;
+                    position++;
+                    while(*insert!='\"')
+                    {
+                        *insert++;
+                        position++;
+                    }
+                    *insert++;
+                    position++;
+                }
+            }
+            else if(*insert=='\"' && inside_quotes_counter > 0)
+            {
+                temp=insert;
+                temp_position=position;
+                while(1)
+                {
+                    *insert++;
+                    temp_position++;
+                    if(temp_position==length-1)
+                    {
+                        insert = temp;
+                        break;
+                    }
+                    else if(isspace(*insert))
+                    {
+                        continue;
+                    }
+                    else if(*insert==',')
+                    {
+                        insert = temp;
+                        break;
+                    }
+                    else
+                    {
+                        printf("ERROR\n");
+                        stop=1;
+                        break;
+                    }
+                }
+                if(stop==1)
+                {
+                    break;
+                }
+                elements_count++;
+                printf("The string contains more strings\n");
+                if(position+3>length)
+                {
+                    printf("The number of elements is %d\n",elements_count);
+                    break;
+                }
+                else 
+                {
+                    *insert++;
+                    position++;
+                    while(*insert!='\"')
+                    {
+                        *insert++;
+                        position++;
+                    }
+                    *insert++;
+                    position++;
+                }
             }
             else
             {
-                printf("Bad input");
-                break;
-            }
-        }
-        if(*insert=='\"' && counter == 0)
-        {
-            elements_count++;
-            printf("The string doesn't contains more strings\n");
-            if(position+3>length)
-            {
-                printf("The number of elements is %d\n",elements_count);
-                break;
-            }
-            else 
-            {
-                *insert++;
-                position++;
-                while(*insert!='\"')
-                {
-                    *insert++;
-                    position++;
-                }
                 *insert++;
                 position++;
             }
         }
-        else if(*insert=='\"' && counter > 0)
-        {
-            elements_count++;
-            printf("The string contains more strings\n");
-            if(position+3>length)
-            {
-                printf("The number of elements is %d\n",elements_count);
-                break;
-            }
-            else 
-            {
-                *insert++;
-                position++;
-                while(*insert!='\"')
-                {
-                    *insert++;
-                    position++;
-                }
-                *insert++;
-                position++;
-            }
         }
-        else
-        {
-            *insert++;
-            position++;
-        }
-    }
+
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 126 "excfle.l"
+#line 194 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 936 "lex.yy.c"
+#line 1005 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1940,7 +2009,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 126 "excfle.l"
+#line 194 "excfle.l"
 
 
 int main(int argc, char **argv)
