@@ -1,6 +1,6 @@
 /**array_number_member ({number}{whitespace},({whitespace}{number})|({number}{whitespace},{whitespace}{number}))***/
-/*  r{3}ux  rrrux rrrrux rrrrrux */
 /*{array_multi} { return JSON_ARRAY_MULTI; }*/
+
 %{
 #include <ctype.h>
 #include <string.h>
@@ -39,16 +39,18 @@ comma_string (,{string})*
 array_string_member ((({string}{whitespace}),({whitespace}{string}){comma_string})*)|({string})
 array_string {open_quote}{whitespace}{array_string_member}{whitespace}{close_quote}
 array_multi_member ({array_number_member}|{array_string_member})*
-array_multi {open_quote}{whitespace}{part_string}{whitespace}{close_quote}
+comma_mult ((,{part_string})|(,{number}))*
+array_multi ({part_string}{comma_mult}|{number}{comma_mult})*
 
 %%
-^{number}$ { yylval = atoi(yytext); return POS_INTEGER; }
+^{integer}$ { yylval = atoi(yytext); return POS_INTEGER; }
+^{number}$ { yylval = atoi(yytext); return JSON_NUMBER; }
 ^{negative}$ { yylval = atoi(yytext); return JSON_NUMBER; }
 {array_number} { return JSON_ARRAY; }
-{part_string} {
+{array_multi} {
     char *insert = yytext;
     char *temp = yytext;
-    int length = strlen(yytext)+1;
+    int length = yyleng;
     int position = 1;
     int inside_quotes_counter=0;
     int consecutive_quotes_counter=0;
@@ -56,13 +58,15 @@ array_multi {open_quote}{whitespace}{part_string}{whitespace}{close_quote}
     int i=0;
     int stop=0;
     int temp_position;
+    printf("The char before if is %c\n",*insert);
+    printf("The length before if is %d\n",length);
     if(*insert=='\"')
     {
         *insert++;
         consecutive_quotes_counter++;
         while (i==0)
         {
-            printf("The char is %c\n",*insert);;
+            printf("The char is %c\n",*insert);
             if(*insert=='\\')
             {
                 *insert++;
@@ -82,7 +86,7 @@ array_multi {open_quote}{whitespace}{part_string}{whitespace}{close_quote}
                 {
                     *insert++;
                     temp_position++;
-                    if(temp_position==length-1)
+                    if(temp_position==length)
                     {
                         insert = temp;
                         break;
@@ -102,8 +106,7 @@ array_multi {open_quote}{whitespace}{part_string}{whitespace}{close_quote}
                         stop=1;
                         break;
                     }
-                }
-                
+                }       
                 if(stop==1)
                 {
                     break;
@@ -136,7 +139,7 @@ array_multi {open_quote}{whitespace}{part_string}{whitespace}{close_quote}
                 {
                     *insert++;
                     temp_position++;
-                    if(temp_position==length-1)
+                    if(temp_position==length)
                     {
                         insert = temp;
                         break;
@@ -181,30 +184,43 @@ array_multi {open_quote}{whitespace}{part_string}{whitespace}{close_quote}
                     position++;
                 }
             }
+            else if(isdigit((int)*insert))
+            {
+                printf("STOPPPPPPPP");
+                while(isdigit(*insert) && position<length)
+                {
+                    *insert++;
+                    position++;
+                }
+                if(position==length)
+                {
+                    elements_count++;
+                    printf("The number of elements isis %d\n",elements_count);
+                    break;
+                }
+                else if(*insert==',')
+                {
+                    elements_count++;
+                    *insert++;
+                    position++;
+                }
+                else
+                {
+                    printf("NUMBER ERROR!!!!");
+                }
+            }
             else
             {
                 *insert++;
                 position++;
+                if(position>length)
+                {
+                    printf("ERROR!!!!");
+                    break;
+                }
             }
         }
         }
 }
 
 %%
-
-int main(int argc, char **argv)
-{
-    int tok;
-    while(tok = yylex()) 
-    {
-        printf("%d", tok);
-        if(tok == JSON_NUMBER) 
-        {
-            printf(" = %d\n", yylval);
-        }
-        else 
-        {
-            printf("\n");
-        }
-    }
-}
