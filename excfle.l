@@ -4,6 +4,7 @@
 %{
 #include <ctype.h>
 #include <string.h>
+
 enum yytokentype {
     JSON_NUMBER = 258,
     POS_INTEGER = 259,
@@ -40,7 +41,7 @@ array_string_member ((({string}{whitespace}),({whitespace}{string}){comma_string
 array_string {open_quote}{whitespace}{array_string_member}{whitespace}{close_quote}
 array_multi_member ({array_number_member}|{array_string_member})*
 comma_mult ((,{part_string})|(,{number}))*
-array_multi ({part_string}{comma_mult}|{number}{comma_mult})*
+array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
 
 %%
 ^{integer}$ { yylval = atoi(yytext); return POS_INTEGER; }
@@ -55,172 +56,144 @@ array_multi ({part_string}{comma_mult}|{number}{comma_mult})*
     int inside_quotes_counter=0;
     int consecutive_quotes_counter=0;
     int elements_count=0;
-    int i=0;
     int stop=0;
     int temp_position;
-    printf("The char before if is %c\n",*insert);
-    printf("The length before if is %d\n",length);
+    consecutive_quotes_counter++;
     if(*insert=='\"')
     {
         *insert++;
-        consecutive_quotes_counter++;
-        while (i==0)
+    }
+    while (1)
+    {
+        if(*insert=='\\')
         {
-            printf("The char is %c\n",*insert);
-            if(*insert=='\\')
+            *insert++;
+            position++;
+            if(*insert=='\"')
             {
+                inside_quotes_counter++;
+                *insert++;
+                position++;
+            }
+        }
+        if(*insert=='\"')
+        {
+            if(position==length)
+            {
+                elements_count++;
+                printf("The number of elements is %d\n",elements_count);
+                break;
+            }
+            temp=insert;
+            temp_position=position;
+            while(1)
+            {
+                *insert++;
+                temp_position++;
+                if(*insert==']')
+                {
+                    elements_count++;
+                    printf("The number of elements is %d\n",elements_count);
+                    break;
+                }
+                if(temp_position==length)
+                {
+                    insert = temp;
+                    break;
+                }
+                else if(isspace(*insert))
+                {
+                    continue;
+                }
+                else if(*insert==',')
+                {
+                    insert = temp;
+                    *insert++;
+                    position++;
+                    break;
+                }
+                else
+                {
+                    printf("ERROR\n");
+                    stop=1;
+                    break;
+                }
+            }       
+            if(stop==1)
+            {
+                break;
+            }
+            elements_count++;
+            *insert++;
+            position++;
+            if(inside_quotes_counter==0)
+            {
+                printf("The string doesn't contains more strings\n");
+            }
+            else
+            {
+                printf("The string contains more strings\n");
+            }
+            if(position+1>length)
+            {
+                printf("The number of elements is %d\n",elements_count);
+                break;
+            }
+            else if(!isdigit(*insert))
+            {
+                while(*insert!='\"')
+                {
+                    *insert++;
+                    position++;
+                }
+                *insert++;
+                position++;
+            }
+            else if(isdigit(*insert))
+            {
+                position++;
+            }
+        }
+        else if(isdigit(*insert))
+        {
+            while(isdigit(*insert) && position<length)
+            {
+                *insert++;
+                position++;
+            }
+            if(position==length && isdigit(*insert))
+            {
+                elements_count++;
+                printf("The number of elements is %d\n",elements_count);
+                break;
+            }
+            else if(*insert==',')
+            {
+                elements_count++;
                 *insert++;
                 position++;
                 if(*insert=='\"')
                 {
-                    inside_quotes_counter++;
                     *insert++;
                     position++;
-                }
-            }
-            if(*insert=='\"' && inside_quotes_counter == 0)
-            {
-                temp=insert;
-                temp_position=position;
-                while(1)
-                {
-                    *insert++;
-                    temp_position++;
-                    if(temp_position==length)
-                    {
-                        insert = temp;
-                        break;
-                    }
-                    else if(isspace(*insert))
-                    {
-                        continue;
-                    }
-                    else if(*insert==',')
-                    {
-                        insert = temp;
-                        break;
-                    }
-                    else
-                    {
-                        printf("ERROR\n");
-                        stop=1;
-                        break;
-                    }
-                }       
-                if(stop==1)
-                {
-                    break;
-                }
-                elements_count++;
-                printf("The string doesn't contains more strings\n");
-                if(position+3>length)
-                {
-                    printf("The number of elements is %d\n",elements_count);
-                    break;
-                }
-                else 
-                {
-                    *insert++;
-                    position++;
-                    while(*insert!='\"')
-                    {
-                        *insert++;
-                        position++;
-                    }
-                    *insert++;
-                    position++;
-                }
-            }
-            else if(*insert=='\"' && inside_quotes_counter > 0)
-            {
-                temp=insert;
-                temp_position=position;
-                while(1)
-                {
-                    *insert++;
-                    temp_position++;
-                    if(temp_position==length)
-                    {
-                        insert = temp;
-                        break;
-                    }
-                    else if(isspace(*insert))
-                    {
-                        continue;
-                    }
-                    else if(*insert==',')
-                    {
-                        insert = temp;
-                        break;
-                    }
-                    else
-                    {
-                        printf("ERROR\n");
-                        stop=1;
-                        break;
-                    }
-                }
-                if(stop==1)
-                {
-                    break;
-                }
-                elements_count++;
-                printf("The string contains more strings\n");
-                if(position+3>length)
-                {
-                    printf("The number of elements is %d\n",elements_count);
-                    break;
-                }
-                else 
-                {
-                    *insert++;
-                    position++;
-                    while(*insert!='\"')
-                    {
-                        *insert++;
-                        position++;
-                    }
-                    *insert++;
-                    position++;
-                }
-            }
-            else if(isdigit((int)*insert))
-            {
-                printf("STOPPPPPPPP");
-                while(isdigit(*insert) && position<length)
-                {
-                    *insert++;
-                    position++;
-                }
-                if(position==length)
-                {
-                    elements_count++;
-                    printf("The number of elements isis %d\n",elements_count);
-                    break;
-                }
-                else if(*insert==',')
-                {
-                    elements_count++;
-                    *insert++;
-                    position++;
-                }
-                else
-                {
-                    printf("NUMBER ERROR!!!!");
                 }
             }
             else
             {
-                *insert++;
-                position++;
-                if(position>length)
-                {
-                    printf("ERROR!!!!");
-                    break;
-                }
+                printf("NUMBER ERROR!!!!");
+                break;
             }
         }
+        else
+        {
+            *insert++;
+            position++;
+            if(position>length)
+            {
+                printf("ERROR!!!!");
+                break;
+            }
         }
+    }
 }
-
 %%
