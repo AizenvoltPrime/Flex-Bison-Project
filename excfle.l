@@ -40,8 +40,8 @@ comma_string (,{string})*
 array_string_member ((({string}{whitespace}),({whitespace}{string}){comma_string})*)|({string})
 array_string {open_quote}{whitespace}{array_string_member}{whitespace}{close_quote}
 array_multi_member ({array_number_member}|{array_string_member})*
-comma_mult ((,{part_string})|(,{number}))*
-array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
+comma_mult ((,{whitespace}{part_string})|(,{whitespace}{number}))*
+array_multi ^({part_string}{whitespace}{comma_mult})|({number}{whitespace}{comma_mult})$
 
 %%
 ^{integer}$ { yylval = atoi(yytext); return POS_INTEGER; }
@@ -59,9 +59,12 @@ array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
     int stop=0;
     int temp_position;
     consecutive_quotes_counter++;
+    int digit_block=0;
     if(*insert=='\"')
     {
         *insert++;
+        position++;
+        digit_block=1;
     }
     while (1)
     {
@@ -78,27 +81,30 @@ array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
         }
         if(*insert=='\"')
         {
+            digit_block=0;
             if(position==length)
             {
                 elements_count++;
                 printf("The number of elements is %d\n",elements_count);
                 break;
             }
-            temp=insert;
-            temp_position=position;
             while(1)
             {
                 *insert++;
-                temp_position++;
+                position++;
                 if(*insert==']')
                 {
                     elements_count++;
+                    printf("TEST1");
                     printf("The number of elements is %d\n",elements_count);
                     break;
                 }
-                if(temp_position==length)
+                if(position==length)
                 {
-                    insert = temp;
+                    elements_count++;
+                    printf("TEST2");
+                    printf("The number of elements is %d\n",elements_count);
+                    stop=1;
                     break;
                 }
                 else if(isspace(*insert))
@@ -107,9 +113,13 @@ array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
                 }
                 else if(*insert==',')
                 {
-                    insert = temp;
                     *insert++;
                     position++;
+                    while(isspace(*insert))
+                    {
+                        *insert++;
+                        position++;
+                    }
                     break;
                 }
                 else
@@ -124,8 +134,6 @@ array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
                 break;
             }
             elements_count++;
-            *insert++;
-            position++;
             if(inside_quotes_counter==0)
             {
                 printf("The string doesn't contains more strings\n");
@@ -134,32 +142,27 @@ array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
             {
                 printf("The string contains more strings\n");
             }
-            if(position+1>length)
+            if(!isdigit(*insert) && *insert=='\"')
             {
-                printf("The number of elements is %d\n",elements_count);
-                break;
-            }
-            else if(!isdigit(*insert))
-            {
-                while(*insert!='\"')
-                {
-                    *insert++;
-                    position++;
-                }
+                digit_block=1;
                 *insert++;
                 position++;
             }
-            else if(isdigit(*insert))
-            {
-                position++;
-            }
         }
-        else if(isdigit(*insert))
+        else if(isdigit(*insert) && digit_block==0)
         {
             while(isdigit(*insert) && position<length)
             {
                 *insert++;
                 position++;
+            }
+            if (isspace(*insert))
+            {
+                while(isspace(*insert))
+                {
+                    *insert++;
+                    position++;
+                }
             }
             if(position==length && isdigit(*insert))
             {
@@ -172,10 +175,16 @@ array_multi ^({part_string}{comma_mult})|({number}{comma_mult})$
                 elements_count++;
                 *insert++;
                 position++;
+                while(isspace(*insert))
+                {
+                    *insert++;
+                    position++;
+                }
                 if(*insert=='\"')
                 {
                     *insert++;
                     position++;
+                    digit_block=1;
                 }
             }
             else
