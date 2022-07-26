@@ -3,6 +3,7 @@
 
 %{
 #include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
 
 enum yytokentype {
@@ -15,7 +16,55 @@ enum yytokentype {
     TEST2 = 264
 };
 int yylval;
-
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block)
+{
+    while(isdigit(*insert))
+    {
+        *insert++;
+        (*position)++;
+    }
+    if (isspace(*insert))
+    {
+        while(isspace(*insert))
+        {
+            *insert++;
+            (*position)++;
+        }
+    }
+    if(*insert==']')
+    {
+        (*elements_count)++;
+        printf("The number of elements is %d\n",*elements_count);
+        return true;
+    }
+    if(*insert==',')
+    {
+        (*elements_count)++;
+        *insert++;
+        (*position)++;
+        while(isspace(*insert))
+        {
+            *insert++;
+            (*position)++;
+        }
+        if(*insert=='\"')
+        {
+            *insert++;
+            (*position)++;
+            *digit_block=1;
+        }
+    }
+    else if(*insert=='.')
+    {
+        return false;
+    }
+    else
+    {
+        printf("NUMBER ERROR!!!!");
+        return true;
+    }
+    return false;
+}
 %}
 
 open_quote "["
@@ -59,6 +108,7 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
     int temp_position;
     consecutive_quotes_counter++;
     int digit_block=0;
+    int test=0;
     if(*insert=='[')
     {
         *insert++;
@@ -159,60 +209,31 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
         }
         else if(isdigit(*insert) && digit_block==0)
         {
-            while(isdigit(*insert) && position<length)
+            int i=position;
+            if(number_validation(insert, &position, &elements_count, &digit_block) == true)
             {
-                *insert++;
-                position++;
-            }
-            if (isspace(*insert))
-            {
-                while(isspace(*insert))
-                {
-                    *insert++;
-                    position++;
-                }
-            }
-            if(*insert==']')
-            {
-                elements_count++;
-                printf("The number of elements is %d\n",elements_count);
                 break;
             }
-            if(*insert==',')
+            for(i; i<position;i++)
             {
-                elements_count++;
                 *insert++;
-                position++;
-                while(isspace(*insert))
-                {
-                    *insert++;
-                    position++;
-                }
-                if(*insert=='\"')
-                {
-                    *insert++;
-                    position++;
-                    digit_block=1;
-                }
             }
-            else if(*insert=='.')
+            i=position;
+            if(*insert=='.')
             {
                 *insert++;
                 position++;
                 if(isdigit(*insert))
                 {
-                    while(isdigit(*insert) && position<length)
+                    if(number_validation(insert, &position, &elements_count, &digit_block) == true)
+                    {
+                        break;
+                    }
+                    for(i; i<position;i++)
                     {
                         *insert++;
-                        position++;
                     }
                 }
-                printf("HUI");
-            }
-            else
-            {
-                printf("NUMBER ERROR!!!!");
-                break;
             }
         }
         else

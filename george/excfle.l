@@ -4,16 +4,8 @@
 %{
 #include <ctype.h>
 #include <string.h>
+#include "excfle.tab.h"
 
-enum yytokentype {
-    JSON_NUMBER = 258,
-    POS_INTEGER = 259,
-    JSON_STRING = 260,
-    JSON_ARRAY = 261,
-    JSON_ARRAY_MULTI = 262,
-    TEST = 263,
-    TEST2 = 264
-};
 int yylval;
 
 %}

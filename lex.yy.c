@@ -8512,6 +8512,7 @@ char *yytext;
 /*{array_multi} { return JSON_ARRAY_MULTI; }*/
 #line 5 "excfle.l"
 #include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
 
 enum yytokentype {
@@ -8524,9 +8525,57 @@ enum yytokentype {
     TEST2 = 264
 };
 int yylval;
-
-#line 8529 "lex.yy.c"
-#line 8530 "lex.yy.c"
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block)
+{
+    while(isdigit(*insert))
+    {
+        *insert++;
+        (*position)++;
+    }
+    if (isspace(*insert))
+    {
+        while(isspace(*insert))
+        {
+            *insert++;
+            (*position)++;
+        }
+    }
+    if(*insert==']')
+    {
+        (*elements_count)++;
+        printf("The number of elements is %d\n",*elements_count);
+        return true;
+    }
+    if(*insert==',')
+    {
+        (*elements_count)++;
+        *insert++;
+        (*position)++;
+        while(isspace(*insert))
+        {
+            *insert++;
+            (*position)++;
+        }
+        if(*insert=='\"')
+        {
+            *insert++;
+            (*position)++;
+            *digit_block=1;
+        }
+    }
+    else if(*insert=='.')
+    {
+        return false;
+    }
+    else
+    {
+        printf("NUMBER ERROR!!!!");
+        return true;
+    }
+    return false;
+}
+#line 8578 "lex.yy.c"
+#line 8579 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -8746,9 +8795,9 @@ YY_DECL
 		}
 
 	{
-#line 46 "excfle.l"
+#line 95 "excfle.l"
 
-#line 8752 "lex.yy.c"
+#line 8801 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -8811,7 +8860,7 @@ case 1:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 47 "excfle.l"
+#line 96 "excfle.l"
 { yylval = atoi(yytext); return POS_INTEGER; }
 	YY_BREAK
 case 2:
@@ -8819,7 +8868,7 @@ case 2:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 48 "excfle.l"
+#line 97 "excfle.l"
 { yylval = atoi(yytext); return JSON_NUMBER; }
 	YY_BREAK
 case 3:
@@ -8827,12 +8876,12 @@ case 3:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 49 "excfle.l"
+#line 98 "excfle.l"
 { yylval = atoi(yytext); return JSON_NUMBER; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 50 "excfle.l"
+#line 99 "excfle.l"
 {
     char *insert = yytext;
     char *temp = yytext;
@@ -8845,6 +8894,7 @@ YY_RULE_SETUP
     int temp_position;
     consecutive_quotes_counter++;
     int digit_block=0;
+    int test=0;
     if(*insert=='[')
     {
         *insert++;
@@ -8945,60 +8995,31 @@ YY_RULE_SETUP
         }
         else if(isdigit(*insert) && digit_block==0)
         {
-            while(isdigit(*insert) && position<length)
+            int i=position;
+            if(number_validation(insert, &position, &elements_count, &digit_block) == true)
             {
-                *insert++;
-                position++;
-            }
-            if (isspace(*insert))
-            {
-                while(isspace(*insert))
-                {
-                    *insert++;
-                    position++;
-                }
-            }
-            if(*insert==']')
-            {
-                elements_count++;
-                printf("The number of elements is %d\n",elements_count);
                 break;
             }
-            if(*insert==',')
+            for(i; i<position;i++)
             {
-                elements_count++;
                 *insert++;
-                position++;
-                while(isspace(*insert))
-                {
-                    *insert++;
-                    position++;
-                }
-                if(*insert=='\"')
-                {
-                    *insert++;
-                    position++;
-                    digit_block=1;
-                }
             }
-            else if(*insert=='.')
+            i=position;
+            if(*insert=='.')
             {
                 *insert++;
                 position++;
                 if(isdigit(*insert))
                 {
-                    while(isdigit(*insert) && position<length)
+                    if(number_validation(insert, &position, &elements_count, &digit_block) == true)
+                    {
+                        break;
+                    }
+                    for(i; i<position;i++)
                     {
                         *insert++;
-                        position++;
                     }
                 }
-                printf("HUI");
-            }
-            else
-            {
-                printf("NUMBER ERROR!!!!");
-                break;
             }
         }
         else
@@ -9016,10 +9037,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 230 "excfle.l"
+#line 251 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 9023 "lex.yy.c"
+#line 9044 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -10027,6 +10048,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 230 "excfle.l"
+#line 251 "excfle.l"
 
 
