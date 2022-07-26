@@ -40,7 +40,7 @@ comma_string (,{string})*
 array_string_member ((({string}{whitespace}),({whitespace}{string}){comma_string})*)|({string})
 array_string {open_quote}{whitespace}{array_string_member}{whitespace}{close_quote}
 array_multi_member ({array_number_member}|{array_string_member})*
-comma_mult ((,{whitespace}{part_string})|(,{whitespace}{number}))*
+comma_mult (({whitespace},{whitespace}{part_string})|({whitespace},{whitespace}{number}))*
 array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{part_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({part_string}|{number}){whitespace}{close_quote})
 
 %%
@@ -178,13 +178,7 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
                 printf("The number of elements is %d\n",elements_count);
                 break;
             }
-            if(position==length && isdigit(*insert))
-            {
-                elements_count++;
-                printf("The number of elements is %d\n",elements_count);
-                break;
-            }
-            else if(*insert==',')
+            if(*insert==',')
             {
                 elements_count++;
                 *insert++;
@@ -200,6 +194,20 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
                     position++;
                     digit_block=1;
                 }
+            }
+            else if(*insert=='.')
+            {
+                *insert++;
+                position++;
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert) && position<length)
+                    {
+                        *insert++;
+                        position++;
+                    }
+                }
+                printf("HUI");
             }
             else
             {
