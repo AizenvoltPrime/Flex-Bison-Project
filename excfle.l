@@ -12,8 +12,6 @@ enum yytokentype {
     JSON_STRING = 260,
     JSON_ARRAY = 261,
     JSON_ARRAY_MULTI = 262,
-    TEST = 263,
-    TEST2 = 264
 };
 int yylval;
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block)
@@ -37,7 +35,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
         printf("The number of elements is %d\n",*elements_count);
         return true;
     }
-    if(*insert==',')
+    else if(*insert==',')
     {
         (*elements_count)++;
         *insert++;
@@ -218,7 +216,7 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
             {
                 *insert++;
             }
-            i=position;
+            i=position+1;
             if(*insert=='.')
             {
                 *insert++;
