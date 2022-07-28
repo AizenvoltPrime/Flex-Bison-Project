@@ -14,12 +14,14 @@ enum yytokentype {
     JSON_ARRAY_MULTI = 262,
 };
 int yylval;
-bool number_validation(char *insert, int *position, int *elements_count, int *digit_block)
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific)
 {
+    int digit_counter=0;
     while(isdigit(*insert))
     {
         *insert++;
         (*position)++;
+        digit_counter++;
     }
     if (isspace(*insert))
     {
@@ -27,6 +29,116 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
         {
             *insert++;
             (*position)++;
+        }
+    }
+    if(*insert=='E' || *insert=='e')
+    {
+        *scientific=true;
+    }
+    if((*insert=='E' || *insert=='e') && *scientific==true)
+    {
+        if(digit_counter==0)
+        {
+            *insert++;
+            (*position)++;
+            if(isdigit(*insert) || *insert== '-' || *insert== '+')
+            {
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+                else if(*insert== '-' || *insert== '+')
+                {
+                    *insert++;
+                    (*position)++;
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+            }
+            else
+            {
+                printf("NUMBER ERROR!!!!");
+                return true;
+            }
+        }
+        else if(digit_counter>0)
+        {
+            *insert++;
+            (*position)++;
+            if(isdigit(*insert))
+            {
+                while(isdigit(*insert))
+                {
+                    *insert++;
+                    (*position)++;
+                }
+                if (isspace(*insert))
+                {
+                    while(isspace(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                }
+                *scientific==false;
+            }
+            else if(*insert== '-' || *insert== '+')
+            {
+                *insert++;
+                (*position)++;
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+                else
+                {
+                    printf("NUMBER ERROR!!!!");
+                    return true;
+                }
+            }
+            else
+            {
+                printf("NUMBER ERROR!!!!");
+                return true;
+            }
         }
     }
     if(*insert==']')
@@ -99,14 +211,15 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
     char *temp = yytext;
     int length = yyleng;
     int position = 1;
-    int inside_quotes_counter=0;
-    int consecutive_quotes_counter=0;
-    int elements_count=0;
-    int stop=0;
+    int inside_quotes_counter = 0;
+    int consecutive_quotes_counter = 0;
+    int elements_count = 0;
+    int stop = 0;
     int temp_position;
     consecutive_quotes_counter++;
-    int digit_block=0;
-    int test=0;
+    int digit_block = 0;
+    int test = 0;
+    bool scientific = false;
     if(*insert=='[')
     {
         *insert++;
@@ -208,7 +321,7 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
         else if(isdigit(*insert) && digit_block==0)
         {
             int i=position;
-            if(number_validation(insert, &position, &elements_count, &digit_block) == true)
+            if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
             {
                 break;
             }
@@ -221,9 +334,13 @@ array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{nu
             {
                 *insert++;
                 position++;
-                if(isdigit(*insert))
+                if(isdigit(*insert) || *insert == 'E' || *insert == 'e')
                 {
-                    if(number_validation(insert, &position, &elements_count, &digit_block) == true)
+                    if(*insert == 'E' || *insert == 'e')
+                    {
+                        scientific=true;
+                    }
+                    if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
                     {
                         break;
                     }

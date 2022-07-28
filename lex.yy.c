@@ -8523,12 +8523,14 @@ enum yytokentype {
     JSON_ARRAY_MULTI = 262,
 };
 int yylval;
-bool number_validation(char *insert, int *position, int *elements_count, int *digit_block)
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific)
 {
+    int digit_counter=0;
     while(isdigit(*insert))
     {
         *insert++;
         (*position)++;
+        digit_counter++;
     }
     if (isspace(*insert))
     {
@@ -8536,6 +8538,116 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
         {
             *insert++;
             (*position)++;
+        }
+    }
+    if(*insert=='E' || *insert=='e')
+    {
+        *scientific=true;
+    }
+    if((*insert=='E' || *insert=='e') && *scientific==true)
+    {
+        if(digit_counter==0)
+        {
+            *insert++;
+            (*position)++;
+            if(isdigit(*insert) || *insert== '-' || *insert== '+')
+            {
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+                else if(*insert== '-' || *insert== '+')
+                {
+                    *insert++;
+                    (*position)++;
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+            }
+            else
+            {
+                printf("NUMBER ERROR!!!!");
+                return true;
+            }
+        }
+        else if(digit_counter>0)
+        {
+            *insert++;
+            (*position)++;
+            if(isdigit(*insert))
+            {
+                while(isdigit(*insert))
+                {
+                    *insert++;
+                    (*position)++;
+                }
+                if (isspace(*insert))
+                {
+                    while(isspace(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                }
+                *scientific==false;
+            }
+            else if(*insert== '-' || *insert== '+')
+            {
+                *insert++;
+                (*position)++;
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+                else
+                {
+                    printf("NUMBER ERROR!!!!");
+                    return true;
+                }
+            }
+            else
+            {
+                printf("NUMBER ERROR!!!!");
+                return true;
+            }
         }
     }
     if(*insert==']')
@@ -8572,8 +8684,8 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     }
     return false;
 }
-#line 8576 "lex.yy.c"
-#line 8577 "lex.yy.c"
+#line 8688 "lex.yy.c"
+#line 8689 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -8793,9 +8905,9 @@ YY_DECL
 		}
 
 	{
-#line 93 "excfle.l"
+#line 205 "excfle.l"
 
-#line 8799 "lex.yy.c"
+#line 8911 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -8858,7 +8970,7 @@ case 1:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 94 "excfle.l"
+#line 206 "excfle.l"
 { yylval = atoi(yytext); return POS_INTEGER; }
 	YY_BREAK
 case 2:
@@ -8866,7 +8978,7 @@ case 2:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 95 "excfle.l"
+#line 207 "excfle.l"
 { yylval = atoi(yytext); return JSON_NUMBER; }
 	YY_BREAK
 case 3:
@@ -8874,25 +8986,26 @@ case 3:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 96 "excfle.l"
+#line 208 "excfle.l"
 { yylval = atoi(yytext); return JSON_NUMBER; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 97 "excfle.l"
+#line 209 "excfle.l"
 {
     char *insert = yytext;
     char *temp = yytext;
     int length = yyleng;
     int position = 1;
-    int inside_quotes_counter=0;
-    int consecutive_quotes_counter=0;
-    int elements_count=0;
-    int stop=0;
+    int inside_quotes_counter = 0;
+    int consecutive_quotes_counter = 0;
+    int elements_count = 0;
+    int stop = 0;
     int temp_position;
     consecutive_quotes_counter++;
-    int digit_block=0;
-    int test=0;
+    int digit_block = 0;
+    int test = 0;
+    bool scientific = false;
     if(*insert=='[')
     {
         *insert++;
@@ -8994,7 +9107,7 @@ YY_RULE_SETUP
         else if(isdigit(*insert) && digit_block==0)
         {
             int i=position;
-            if(number_validation(insert, &position, &elements_count, &digit_block) == true)
+            if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
             {
                 break;
             }
@@ -9007,9 +9120,13 @@ YY_RULE_SETUP
             {
                 *insert++;
                 position++;
-                if(isdigit(*insert))
+                if(isdigit(*insert) || *insert == 'E' || *insert == 'e')
                 {
-                    if(number_validation(insert, &position, &elements_count, &digit_block) == true)
+                    if(*insert == 'E' || *insert == 'e')
+                    {
+                        scientific=true;
+                    }
+                    if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
                     {
                         break;
                     }
@@ -9035,10 +9152,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 249 "excfle.l"
+#line 366 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 9042 "lex.yy.c"
+#line 9159 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -10046,6 +10163,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 249 "excfle.l"
+#line 366 "excfle.l"
 
 
