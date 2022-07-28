@@ -1,6 +1,3 @@
-/**array_number_member ({number}{whitespace},({whitespace}{number})|({number}{whitespace},{whitespace}{number}))***/
-/*{array_multi} { return JSON_ARRAY_MULTI; }*/
-
 %{
 #include <ctype.h>
 #include <stdbool.h>
@@ -12,6 +9,7 @@ enum yytokentype {
     JSON_STRING = 260,
     JSON_ARRAY = 261,
     JSON_ARRAY_MULTI = 262,
+    ANUM = 263
 };
 int yylval;
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific)
@@ -182,30 +180,18 @@ close_quote "]"
 character [A-Za-z]
 digit [0-9]
 whitespace [ ]*
-string \".*[^\",\"]\"
-string_in_string \"(.*(\\\").*(\\\").*)*\"
-part_string \".*\"
-last_part_string \"{character}*\"
-js_string ^{string}$
+string \"(([A-Za-z])|([0-9]))*\"
+json_string \".*\"
 integer {digit}+
 decimal {integer}?\.{digit}*
 scientific {decimal}[Ee][+-]?{integer}*
 number (-?{integer})|(-?{decimal})|(-?{scientific})
-negative -{number}
-comma_number (,-?{number})*
-array_number_member ((-?{number}{whitespace},{whitespace}-?{number}{comma_number})*)|-?({number})
-array_number {open_quote}{whitespace}{array_number_member}{whitespace}{close_quote}
-comma_string (,{string})*
-array_string_member ((({string}{whitespace}),({whitespace}{string}){comma_string})*)|({string})
-array_string {open_quote}{whitespace}{array_string_member}{whitespace}{close_quote}
-array_multi_member ({array_number_member}|{array_string_member})*
-comma_mult (({whitespace},{whitespace}{part_string})|({whitespace},{whitespace}{number}))*
-array_multi ({open_quote}{whitespace}(({part_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{part_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({part_string}|{number}){whitespace}{close_quote})
+comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{number}))*
+array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
 
 %%
 ^{integer}$ { yylval = atoi(yytext); return POS_INTEGER; }
-^{number}$ { yylval = atoi(yytext); return JSON_NUMBER; }
-^{negative}$ { yylval = atoi(yytext); return JSON_NUMBER; }
+{string} { return ANUM; }
 {array_multi} {
     char *insert = yytext;
     char *temp = yytext;
