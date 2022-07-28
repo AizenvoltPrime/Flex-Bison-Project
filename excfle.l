@@ -190,7 +190,7 @@ js_string ^{string}$
 integer {digit}+
 decimal {integer}?\.{digit}*
 scientific {decimal}[Ee][+-]?{integer}*
-number {integer}|{decimal}|{scientific}
+number (-?{integer})|(-?{decimal})|(-?{scientific})
 negative -{number}
 comma_number (,-?{number})*
 array_number_member ((-?{number}{whitespace},{whitespace}-?{number}{comma_number})*)|-?({number})
