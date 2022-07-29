@@ -54,8 +54,12 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    POS_INTEGER = 258,             /* POS_INTEGER  */
-    EOL = 259                      /* EOL  */
+    JSON_NUMBER = 258,             /* JSON_NUMBER  */
+    POS_INTEGER = 259,             /* POS_INTEGER  */
+    JSON_STRING = 260,             /* JSON_STRING  */
+    JSON_ARRAY = 261,              /* JSON_ARRAY  */
+    ANUM = 262,                    /* ANUM  */
+    EOL = 263                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

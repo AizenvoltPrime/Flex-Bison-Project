@@ -2,15 +2,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
+#include "excfle.tab.h"
 
-enum yytokentype {
-    JSON_NUMBER = 258,
-    POS_INTEGER = 259,
-    JSON_STRING = 260,
-    JSON_ARRAY = 261,
-    ANUM = 262
-};
-int yylval;
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
 {
     int digit_counter=0;
@@ -192,6 +185,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
 %%
 ^{integer}$ { yylval = atoi(yytext); return POS_INTEGER; }
 {string} { return ANUM; }
+\n {return EOL;}
 {array_multi} {
     char *insert = yytext;
     char *temp = yytext;
