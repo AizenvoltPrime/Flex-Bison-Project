@@ -8,11 +8,10 @@ enum yytokentype {
     POS_INTEGER = 259,
     JSON_STRING = 260,
     JSON_ARRAY = 261,
-    JSON_ARRAY_MULTI = 262,
-    ANUM = 263
+    ANUM = 262
 };
 int yylval;
-bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific)
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
 {
     int digit_counter=0;
     while(isdigit(*insert))
@@ -143,6 +142,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     {
         (*elements_count)++;
         printf("The number of elements is %d\n",*elements_count);
+        *correct_value=true;
         return true;
     }
     else if(*insert==',')
@@ -206,6 +206,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
     int digit_block = 0;
     int test = 0;
     bool scientific = false;
+    bool correct_value=false;
     if(*insert=='[')
     {
         *insert++;
@@ -242,6 +243,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
             {
                 elements_count++;
                 printf("The number of elements is %d\n",elements_count);
+                correct_value=true;
                 break;
             }
             while(1)
@@ -252,6 +254,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                 {
                     elements_count++;
                     printf("The number of elements is %d\n",elements_count);
+                    correct_value=true;
                     stop=1;
                     break;
                 }
@@ -259,6 +262,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                 {
                     elements_count++;
                     printf("The number of elements is %d\n",elements_count);
+                    correct_value=true;
                     stop=1;
                     break;
                 }
@@ -307,7 +311,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
         else if(isdigit(*insert) && digit_block==0)
         {
             int i=position;
-            if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
+            if(number_validation(insert, &position, &elements_count, &digit_block, &scientific, &correct_value) == true)
             {
                 break;
             }
@@ -326,7 +330,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                     {
                         scientific=true;
                     }
-                    if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
+                    if(number_validation(insert, &position, &elements_count, &digit_block, &scientific, &correct_value) == true)
                     {
                         break;
                     }
@@ -347,6 +351,15 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                 break;
             }
         }
+    }
+    if(correct_value == true)
+    {
+        printf("correct value");
+        return JSON_ARRAY;
+    }
+    else
+    {
+        printf("false value");
     }
 }
 %%

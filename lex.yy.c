@@ -10184,11 +10184,10 @@ enum yytokentype {
     POS_INTEGER = 259,
     JSON_STRING = 260,
     JSON_ARRAY = 261,
-    JSON_ARRAY_MULTI = 262,
-    ANUM = 263
+    ANUM = 262
 };
 int yylval;
-bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific)
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
 {
     int digit_counter=0;
     while(isdigit(*insert))
@@ -10319,6 +10318,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     {
         (*elements_count)++;
         printf("The number of elements is %d\n",*elements_count);
+        *correct_value=true;
         return true;
     }
     else if(*insert==',')
@@ -10660,6 +10660,7 @@ YY_RULE_SETUP
     int digit_block = 0;
     int test = 0;
     bool scientific = false;
+    bool correct_value=false;
     if(*insert=='[')
     {
         *insert++;
@@ -10696,6 +10697,7 @@ YY_RULE_SETUP
             {
                 elements_count++;
                 printf("The number of elements is %d\n",elements_count);
+                correct_value=true;
                 break;
             }
             while(1)
@@ -10706,6 +10708,7 @@ YY_RULE_SETUP
                 {
                     elements_count++;
                     printf("The number of elements is %d\n",elements_count);
+                    correct_value=true;
                     stop=1;
                     break;
                 }
@@ -10713,6 +10716,7 @@ YY_RULE_SETUP
                 {
                     elements_count++;
                     printf("The number of elements is %d\n",elements_count);
+                    correct_value=true;
                     stop=1;
                     break;
                 }
@@ -10761,7 +10765,7 @@ YY_RULE_SETUP
         else if(isdigit(*insert) && digit_block==0)
         {
             int i=position;
-            if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
+            if(number_validation(insert, &position, &elements_count, &digit_block, &scientific, &correct_value) == true)
             {
                 break;
             }
@@ -10780,7 +10784,7 @@ YY_RULE_SETUP
                     {
                         scientific=true;
                     }
-                    if(number_validation(insert, &position, &elements_count, &digit_block, &scientific) == true)
+                    if(number_validation(insert, &position, &elements_count, &digit_block, &scientific, &correct_value) == true)
                     {
                         break;
                     }
@@ -10802,14 +10806,23 @@ YY_RULE_SETUP
             }
         }
     }
+    if(correct_value == true)
+    {
+        printf("correct value");
+        return JSON_ARRAY;
+    }
+    else
+    {
+        printf("false value");
+    }
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 352 "excfle.l"
+#line 365 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 10813 "lex.yy.c"
+#line 10826 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -11817,6 +11830,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 352 "excfle.l"
+#line 365 "excfle.l"
 
 
