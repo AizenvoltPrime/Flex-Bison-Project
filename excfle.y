@@ -1,5 +1,8 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define YYSTYPE char *
 
 int yylex();
 int yyerror(const char *s);
@@ -11,13 +14,14 @@ int yyerror(const char *s);
 %%
 
 calclist: /* nothing */
-| calclist game_id EOL { printf("= %d\n", $2);}
+| calclist game_id EOL {printf("=%d\n", atoi($2));}
+| calclist string EOL {printf("=%s\n",$2);}
 ;
 
-game_id: POS_INTEGER { $$ = $1 + $1;}
-;
+game_id: POS_INTEGER {$$ = $1;};
+
+string: ANUM {$$ = $1;};
 %%
-
 int main(int argc, char **argv)
 {
     yyparse();

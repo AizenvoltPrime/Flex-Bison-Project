@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
+#define YYSTYPE char *
 #include "excfle.tab.h"
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
@@ -183,8 +184,8 @@ comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{
 array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
 
 %%
-^{integer}$ { yylval = atoi(yytext); return POS_INTEGER; }
-{string} { return ANUM; }
+^{integer}$ {yylval = yytext; return POS_INTEGER; }
+{string} { yylval=yytext; return ANUM; }
 \n {return EOL;}
 {array_multi} {
     char *insert = yytext;

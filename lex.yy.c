@@ -10178,6 +10178,7 @@ char *yytext;
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
+#define YYSTYPE char *
 #include "excfle.tab.h"
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
@@ -10342,8 +10343,8 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     }
     return false;
 }
-#line 10346 "lex.yy.c"
 #line 10347 "lex.yy.c"
+#line 10348 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -10563,9 +10564,9 @@ YY_DECL
 		}
 
 	{
-#line 185 "excfle.l"
+#line 186 "excfle.l"
 
-#line 10569 "lex.yy.c"
+#line 10570 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -10628,23 +10629,23 @@ case 1:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 186 "excfle.l"
-{ yylval = atoi(yytext); return POS_INTEGER; }
+#line 187 "excfle.l"
+{yylval = yytext; return POS_INTEGER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 187 "excfle.l"
-{ return ANUM; }
+#line 188 "excfle.l"
+{ yylval=yytext; return ANUM; }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 188 "excfle.l"
+#line 189 "excfle.l"
 {return EOL;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 189 "excfle.l"
+#line 190 "excfle.l"
 {
     char *insert = yytext;
     char *temp = yytext;
@@ -10818,10 +10819,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 359 "excfle.l"
+#line 360 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 10825 "lex.yy.c"
+#line 10826 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -11829,6 +11830,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 359 "excfle.l"
+#line 360 "excfle.l"
 
 

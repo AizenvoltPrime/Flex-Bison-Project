@@ -70,11 +70,14 @@
 #line 1 "excfle.y"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define YYSTYPE char *
 
 int yylex();
 int yyerror(const char *s);
 
-#line 78 "excfle.tab.c"
+#line 81 "excfle.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -113,7 +116,8 @@ enum yysymbol_kind_t
   YYSYMBOL_EOL = 8,                        /* EOL  */
   YYSYMBOL_YYACCEPT = 9,                   /* $accept  */
   YYSYMBOL_calclist = 10,                  /* calclist  */
-  YYSYMBOL_game_id = 11                    /* game_id  */
+  YYSYMBOL_game_id = 11,                   /* game_id  */
+  YYSYMBOL_string = 12                     /* string  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -441,16 +445,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   4
+#define YYLAST   7
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  9
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  3
+#define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  4
+#define YYNRULES  6
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  6
+#define YYNSTATES  9
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   263
@@ -500,7 +504,7 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    13,    13,    14,    17
+       0,    16,    16,    17,    18,    21,    23
 };
 #endif
 
@@ -518,7 +522,7 @@ static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "JSON_NUMBER",
   "POS_INTEGER", "JSON_STRING", "JSON_ARRAY", "ANUM", "EOL", "$accept",
-  "calclist", "game_id", YY_NULLPTR
+  "calclist", "game_id", "string", YY_NULLPTR
 };
 
 static const char *
@@ -542,7 +546,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -8,     0,    -8,    -8,    -7,    -8
+      -8,     0,    -8,    -8,    -8,    -7,    -6,    -8,    -8
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -550,19 +554,19 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     4,     0,     3
+       2,     0,     1,     5,     6,     0,     0,     3,     4
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    -8,    -8
+      -8,    -8,    -8,    -8
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     4
+       0,     1,     5,     6
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -570,31 +574,31 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,     5,     0,     0,     3
+       2,     7,     8,     0,     3,     0,     0,     4
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     8,    -1,    -1,     4
+       0,     8,     8,    -1,     4,    -1,    -1,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    10,     0,     4,    11,     8
+       0,    10,     0,     4,     7,    11,    12,     8,     8
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,     9,    10,    10,    11
+       0,     9,    10,    10,    10,    11,    12
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     3,     1
+       0,     2,     0,     3,     3,     1,     1
 };
 
 
@@ -1058,19 +1062,31 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* calclist: calclist game_id EOL  */
-#line 14 "excfle.y"
-                       { printf("= %d\n", yyvsp[-1]);}
-#line 1064 "excfle.tab.c"
-    break;
-
-  case 4: /* game_id: POS_INTEGER  */
 #line 17 "excfle.y"
-                     { yyval = yyvsp[0] + yyvsp[0];}
-#line 1070 "excfle.tab.c"
+                       {printf("=%d\n", atoi(yyvsp[-1]));}
+#line 1068 "excfle.tab.c"
+    break;
+
+  case 4: /* calclist: calclist string EOL  */
+#line 18 "excfle.y"
+                      {printf("=%s\n",yyvsp[-1]);}
+#line 1074 "excfle.tab.c"
+    break;
+
+  case 5: /* game_id: POS_INTEGER  */
+#line 21 "excfle.y"
+                     {yyval = yyvsp[0];}
+#line 1080 "excfle.tab.c"
+    break;
+
+  case 6: /* string: ANUM  */
+#line 23 "excfle.y"
+             {yyval = yyvsp[0];}
+#line 1086 "excfle.tab.c"
     break;
 
 
-#line 1074 "excfle.tab.c"
+#line 1090 "excfle.tab.c"
 
       default: break;
     }
@@ -1263,8 +1279,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 19 "excfle.y"
-
+#line 24 "excfle.y"
 
 int main(int argc, char **argv)
 {
