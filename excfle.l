@@ -189,19 +189,14 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
 \n {return EOL;}
 {array_multi} {
     char *insert = yytext;
-    char *temp = yytext;
     int length = yyleng;
     int position = 1;
     int inside_quotes_counter = 0;
-    int consecutive_quotes_counter = 0;
     int elements_count = 0;
     int stop = 0;
-    int temp_position;
-    consecutive_quotes_counter++;
     int digit_block = 0;
-    int test = 0;
     bool scientific = false;
-    bool correct_value=false;
+    bool correct_value = false;
     if(*insert=='[')
     {
         *insert++;
