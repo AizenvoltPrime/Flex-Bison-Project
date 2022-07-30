@@ -10648,19 +10648,14 @@ YY_RULE_SETUP
 #line 190 "excfle.l"
 {
     char *insert = yytext;
-    char *temp = yytext;
     int length = yyleng;
     int position = 1;
     int inside_quotes_counter = 0;
-    int consecutive_quotes_counter = 0;
     int elements_count = 0;
     int stop = 0;
-    int temp_position;
-    consecutive_quotes_counter++;
     int digit_block = 0;
-    int test = 0;
     bool scientific = false;
-    bool correct_value=false;
+    bool correct_value = false;
     if(*insert=='[')
     {
         *insert++;
@@ -10819,10 +10814,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 360 "excfle.l"
+#line 355 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 10826 "lex.yy.c"
+#line 10821 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -11830,6 +11825,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 360 "excfle.l"
+#line 355 "excfle.l"
 
 
