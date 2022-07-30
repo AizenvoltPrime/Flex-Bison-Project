@@ -10674,7 +10674,7 @@ YY_RULE_SETUP
     }
     while (1)
     {
-        if(*insert=='\\')
+        if(*insert=='\\') //Checking for strings inside string
         {
             *insert++;
             position++;
@@ -10757,7 +10757,7 @@ YY_RULE_SETUP
                 position++;
             }
         }
-        else if(isdigit(*insert) && digit_block==0)
+        else if(isdigit(*insert) && digit_block==0)//Checking for correct number values
         {
             int i=position;
             if(number_validation(insert, &position, &elements_count, &digit_block, &scientific, &correct_value) == true)
@@ -10794,7 +10794,7 @@ YY_RULE_SETUP
         {
             *insert++;
             position++;
-            if(position>length)
+            if(position>length) //If the position is above length then the number entered is wrong.
             {
                 printf("ERROR!!!!");
                 break;

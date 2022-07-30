@@ -24,7 +24,6 @@ string: ANUM {$$ = $1;};
 %%
 int main(int argc, char **argv)
 {
-    yyparse();
 }
 
 int yyerror(const char *s)
