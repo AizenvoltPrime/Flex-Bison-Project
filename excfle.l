@@ -215,7 +215,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
     }
     while (1)
     {
-        if(*insert=='\\')
+        if(*insert=='\\') //Checking for strings inside string
         {
             *insert++;
             position++;
@@ -298,7 +298,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                 position++;
             }
         }
-        else if(isdigit(*insert) && digit_block==0)
+        else if(isdigit(*insert) && digit_block==0)//Checking for correct number values
         {
             int i=position;
             if(number_validation(insert, &position, &elements_count, &digit_block, &scientific, &correct_value) == true)
@@ -335,7 +335,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
         {
             *insert++;
             position++;
-            if(position>length)
+            if(position>length) //If the position is above length then the number entered is wrong.
             {
                 printf("ERROR!!!!");
                 break;
