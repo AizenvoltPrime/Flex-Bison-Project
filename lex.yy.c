@@ -10626,7 +10626,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 189 "excfle.l"
-{printf("Integer"); return POS_INTEGER; }
+{printf("Integer\n"); return POS_INTEGER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -10674,6 +10674,17 @@ YY_RULE_SETUP
                 *insert++;
                 position++;
             }
+            while(*insert=='\\')
+            {
+                *insert++;
+                position++;
+                if(*insert=='\"')
+                {
+                    inside_quotes_counter++;
+                    *insert++;
+                    position++;
+                }
+            }
         }
         if(*insert=='\"')
         {
@@ -10689,6 +10700,9 @@ YY_RULE_SETUP
             {
                 *insert++;
                 position++;
+                printf("The position is %d\n",position);
+                printf("The length is %d\n",length);
+                printf("The char is %c\n",*insert);
                 if(*insert==']')
                 {
                     elements_count++;
@@ -10793,36 +10807,36 @@ YY_RULE_SETUP
     }
     if(correct_value == true)
     {
-        printf("correct value");
+        printf("correct value\n");
         return JSON_ARRAY;
     }
     else
     {
-        printf("false value");
+        printf("false value\n");
     }
 }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 356 "excfle.l"
+#line 370 "excfle.l"
 {return EOL;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 357 "excfle.l"
+#line 371 "excfle.l"
 { printf("Uknown\n");}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 358 "excfle.l"
+#line 372 "excfle.l"
 {return 0;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 359 "excfle.l"
+#line 373 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 10826 "lex.yy.c"
+#line 10840 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -11825,7 +11839,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 359 "excfle.l"
+#line 373 "excfle.l"
 
 
 int main(int argc, char *argv[])

@@ -186,7 +186,7 @@ comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{
 array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
 
 %%
-{integer} {printf("Integer"); return POS_INTEGER; }
+{integer} {printf("Integer\n"); return POS_INTEGER; }
 {string} {printf("String\n");return ANUM; }
 {array_multi} {
     char *insert = yytext;
@@ -225,6 +225,17 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                 inside_quotes_counter++;
                 *insert++;
                 position++;
+            }
+            while(*insert=='\\')
+            {
+                *insert++;
+                position++;
+                if(*insert=='\"')
+                {
+                    inside_quotes_counter++;
+                    *insert++;
+                    position++;
+                }
             }
         }
         if(*insert=='\"')
@@ -345,12 +356,12 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
     }
     if(correct_value == true)
     {
-        printf("correct value");
+        printf("correct value\n");
         return JSON_ARRAY;
     }
     else
     {
-        printf("false value");
+        printf("false value\n");
     }
 }
 \n {return EOL;}
