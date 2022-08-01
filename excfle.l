@@ -187,9 +187,10 @@ comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{
 array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
 
 %%
-{integer} {printf("Integer\n"); return POS_INTEGER; }
-{string} {printf("String\n");return ANUM; }
+{integer} {printf("Integer at line %d\n", yylineno); return POS_INTEGER; }
+{string} {printf("String at line %d\n", yylineno);return ANUM; }
 {array_multi} {
+    printf("Array mult at line %d\n", yylineno);
     char *insert = yytext;
     int length = yyleng;
     int position = 1;
@@ -298,11 +299,11 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
             elements_count++;
             if(inside_quotes_counter==0)
             {
-                printf("The string doesn't contains more strings\n");
+                //printf("The string doesn't contains more strings\n");
             }
             else
             {
-                printf("The string contains more strings\n");
+                //printf("The string contains more strings\n");
             }
             if(!isdigit(*insert) && *insert=='\"')
             {
@@ -365,8 +366,9 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
         printf("false value\n");
     }
 }
-\n {return EOL;}
-. { printf("Uknown\n");}
+\n {printf("END OF LINE at line %d\n", yylineno); return EOL;}
+\r\n {printf("END OF LINE at line %d\n", yylineno); return EOL;}
+. { printf("Uknown at line %d\n", yylineno\n);}
 <<EOF>> {return 0;}
 %%
 
