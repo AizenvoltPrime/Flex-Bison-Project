@@ -169,6 +169,8 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 }
 %}
 
+%option noyywrap
+
 open_quote "["
 close_quote "]"
 character [A-Za-z]
@@ -184,9 +186,8 @@ comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{
 array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
 
 %%
-^{integer}$ {yylval = yytext; return POS_INTEGER; }
-{string} { yylval=yytext; return ANUM; }
-\n {return EOL;}
+{integer} {printf("Integer"); return POS_INTEGER; }
+{string} {printf("String\n");return ANUM; }
 {array_multi} {
     char *insert = yytext;
     int length = yyleng;
@@ -352,4 +353,27 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
         printf("false value");
     }
 }
+\n {return EOL;}
+. { printf("Uknown\n");}
+<<EOF>> {return 0;}
 %%
+
+int main(int argc, char *argv[])
+{
+    int token;
+    if(argc>1)
+    {
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
+    }
+    do
+    {
+        token = yylex();
+    }while(token != 0);
+    fclose(yyin);
+    yyterminate();
+}
