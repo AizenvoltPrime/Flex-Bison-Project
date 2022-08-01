@@ -170,6 +170,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 %}
 
 %option noyywrap
+%option yylineno
 
 open_quote "["
 close_quote "]"
