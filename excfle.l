@@ -366,8 +366,9 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
         printf("false value\n");
     }
 }
-\n {printf("END OF LINE at line %d\n", yylineno); return EOL;}
-\r\n {printf("END OF LINE at line %d\n", yylineno); return EOL;}
+[ \t] { }
+\n { }
+\r\n { }
 . { printf("Uknown at line %d\n", yylineno);}
 <<EOF>> {return 0;}
 %%

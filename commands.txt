@@ -1,0 +1,5 @@
+bison -d excfle.y
+flex excfle.l
+gcc -o myParser.exe lex.yy.c -lfl
+gcc -o myParser.exe excfle.tab.c lex.yy.c -lfl
+./myParser.exe test.json
