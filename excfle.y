@@ -6,8 +6,8 @@
 
 extern FILE *yyin;
 
-int yylex();
-int yyerror(const char *s);
+extern int yylex();
+extern void yyerror(const char *s);
 %}
 
 %token JSON_NUMBER POS_INTEGER JSON_STRING JSON_ARRAY ANUM UNKNOWN

@@ -76,8 +76,8 @@
 
 extern FILE *yyin;
 
-int yylex();
-int yyerror(const char *s);
+extern int yylex();
+extern void yyerror(const char *s);
 
 #line 83 "excfle.tab.c"
 
