@@ -6,6 +6,7 @@
 #include "excfle.tab.h"
 
 void print_token(int token);
+void yyerror(const char* error);
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
 %}
 
@@ -25,7 +26,7 @@ scientific {decimal}[Ee][+-]?{integer}*
 number (-?{integer})|(-?{decimal})|(-?{scientific})
 comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{number}))*
 array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
-
+false_array_catch {open_quote}.*{close_quote}
 %%
 {integer} {print_token(POS_INTEGER); return POS_INTEGER; }
 {string} {print_token(ANUM); return ANUM; }
@@ -126,7 +127,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
                 }
                 else
                 {
-                    printf("ERROR\n");
+                    //printf("ERROR\n");
                     stop=1;
                     break;
                 }
@@ -190,7 +191,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
             position++;
             if(position>length) //If the position is above length then the number entered is wrong.
             {
-                printf("ERROR!!!!");
+                //printf("ERROR!!!!");
                 break;
             }
         }
@@ -203,34 +204,21 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
     }
     else
     {
-        printf("false value\n");
+        yyerror("Wrong value in array!");
     }
 }
+{false_array_catch} {yyerror("Wrong value in array!");}
 [ \t] { }
 \n { }
 \r\n { }
-. { print_token(UNKNOWN); return UNKNOWN; }
+. { yyerror("Unrecognized character!"); return UNKNOWN; }
 <<EOF>> { print_token(YYEOF); return 0; }
 %%
 
-int main(int argc, char *argv[])
+void yyerror(const char* error)
 {
-    int token;
-    if(argc>1)
-    {
-        yyin = fopen(argv[1], "r");
-        if (yyin == NULL)
-        {
-            perror("Error opening file");
-            return -1;
-        }
-    }
-    do
-    {
-        token = yylex();
-    }while(token != 0);
-    fclose(yyin);
-    yyterminate();
+    printf("ERROR AT LINE %d - ERROR TYPE IS: %s\n",yylineno,error);
+    exit(EXIT_FAILURE);
 }
 
 void print_token(int token)
@@ -306,7 +294,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
             }
             else
             {
-                printf("NUMBER ERROR!!!!");
+                //printf("NUMBER ERROR!!!!");
                 return true;
             }
         }
@@ -354,13 +342,13 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
                 }
                 else
                 {
-                    printf("NUMBER ERROR!!!!");
+                    //printf("NUMBER ERROR!!!!");
                     return true;
                 }
             }
             else
             {
-                printf("NUMBER ERROR!!!!");
+                //printf("NUMBER ERROR!!!!");
                 return true;
             }
         }
@@ -395,7 +383,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     }
     else
     {
-        printf("NUMBER ERROR!!!!");
+        //printf("NUMBER ERROR!!!!");
         return true;
     }
     return false;
