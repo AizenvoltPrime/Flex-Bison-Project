@@ -9,7 +9,7 @@ int yyerror(const char *s);
 %}
 
 %token JSON_NUMBER POS_INTEGER JSON_STRING JSON_ARRAY ANUM UNKNOWN
-%token EOL
+%token EOL EOF
 
 %%
 
@@ -22,24 +22,8 @@ game_id: POS_INTEGER {$$ = $1;};
 
 string: ANUM {$$ = $1;};
 %%
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-    int token;
-    if(argc>1)
-    {
-        yyin = fopen(argv[1], "r");
-        if (yyin == NULL)
-        {
-            perror("Error opening file");
-            return -1;
-        }
-    }
-    do
-    {
-        token = yylex();
-    }while(token != 0);
-    fclose(yyin);
-    yyterminate();
 }
 
 int yyerror(const char *s)
