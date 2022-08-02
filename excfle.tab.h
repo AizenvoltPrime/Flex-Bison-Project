@@ -59,7 +59,8 @@ extern int yydebug;
     JSON_STRING = 260,             /* JSON_STRING  */
     JSON_ARRAY = 261,              /* JSON_ARRAY  */
     ANUM = 262,                    /* ANUM  */
-    EOL = 263                      /* EOL  */
+    UNKNOWN = 263,                 /* UNKNOWN  */
+    EOL = 264                      /* EOL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

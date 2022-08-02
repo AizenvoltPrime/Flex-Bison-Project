@@ -113,11 +113,12 @@ enum yysymbol_kind_t
   YYSYMBOL_JSON_STRING = 5,                /* JSON_STRING  */
   YYSYMBOL_JSON_ARRAY = 6,                 /* JSON_ARRAY  */
   YYSYMBOL_ANUM = 7,                       /* ANUM  */
-  YYSYMBOL_EOL = 8,                        /* EOL  */
-  YYSYMBOL_YYACCEPT = 9,                   /* $accept  */
-  YYSYMBOL_calclist = 10,                  /* calclist  */
-  YYSYMBOL_game_id = 11,                   /* game_id  */
-  YYSYMBOL_string = 12                     /* string  */
+  YYSYMBOL_UNKNOWN = 8,                    /* UNKNOWN  */
+  YYSYMBOL_EOL = 9,                        /* EOL  */
+  YYSYMBOL_YYACCEPT = 10,                  /* $accept  */
+  YYSYMBOL_calclist = 11,                  /* calclist  */
+  YYSYMBOL_game_id = 12,                   /* game_id  */
+  YYSYMBOL_string = 13                     /* string  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -448,7 +449,7 @@ union yyalloc
 #define YYLAST   7
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  9
+#define YYNTOKENS  10
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
@@ -457,7 +458,7 @@ union yyalloc
 #define YYNSTATES  9
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   263
+#define YYMAXUTOK   264
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -497,7 +498,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8
+       5,     6,     7,     8,     9
 };
 
 #if YYDEBUG
@@ -521,8 +522,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "JSON_NUMBER",
-  "POS_INTEGER", "JSON_STRING", "JSON_ARRAY", "ANUM", "EOL", "$accept",
-  "calclist", "game_id", "string", YY_NULLPTR
+  "POS_INTEGER", "JSON_STRING", "JSON_ARRAY", "ANUM", "UNKNOWN", "EOL",
+  "$accept", "calclist", "game_id", "string", YY_NULLPTR
 };
 
 static const char *
@@ -532,7 +533,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-8)
+#define YYPACT_NINF (-9)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -546,7 +547,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -8,     0,    -8,    -8,    -8,    -7,    -6,    -8,    -8
+      -9,     0,    -9,    -9,    -9,    -8,    -7,    -9,    -9
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -560,7 +561,7 @@ static const yytype_int8 yydefact[] =
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    -8,    -8,    -8
+      -9,    -9,    -9,    -9
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -579,20 +580,20 @@ static const yytype_int8 yytable[] =
 
 static const yytype_int8 yycheck[] =
 {
-       0,     8,     8,    -1,     4,    -1,    -1,     7
+       0,     9,     9,    -1,     4,    -1,    -1,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    10,     0,     4,     7,    11,    12,     8,     8
+       0,    11,     0,     4,     7,    12,    13,     9,     9
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,     9,    10,    10,    10,    11,    12
+       0,    10,    11,    11,    11,    12,    13
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1064,29 +1065,29 @@ yyreduce:
   case 3: /* calclist: calclist game_id EOL  */
 #line 17 "excfle.y"
                        {printf("=%d\n", atoi(yyvsp[-1]));}
-#line 1068 "excfle.tab.c"
+#line 1069 "excfle.tab.c"
     break;
 
   case 4: /* calclist: calclist string EOL  */
 #line 18 "excfle.y"
                       {printf("=%s\n",yyvsp[-1]);}
-#line 1074 "excfle.tab.c"
+#line 1075 "excfle.tab.c"
     break;
 
   case 5: /* game_id: POS_INTEGER  */
 #line 21 "excfle.y"
                      {yyval = yyvsp[0];}
-#line 1080 "excfle.tab.c"
+#line 1081 "excfle.tab.c"
     break;
 
   case 6: /* string: ANUM  */
 #line 23 "excfle.y"
              {yyval = yyvsp[0];}
-#line 1086 "excfle.tab.c"
+#line 1087 "excfle.tab.c"
     break;
 
 
-#line 1090 "excfle.tab.c"
+#line 1091 "excfle.tab.c"
 
       default: break;
     }
@@ -1283,7 +1284,6 @@ yyreturnlab:
 
 int main(int argc, char **argv)
 {
-    yyparse();
 }
 
 int yyerror(const char *s)

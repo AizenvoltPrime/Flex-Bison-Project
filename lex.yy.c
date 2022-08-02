@@ -9032,170 +9032,10 @@ char *yytext;
 #define YYSTYPE char *
 #include "excfle.tab.h"
 
-bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
-{
-    int digit_counter=0;
-    while(isdigit(*insert))
-    {
-        *insert++;
-        (*position)++;
-        digit_counter++;
-    }
-    if (isspace(*insert))
-    {
-        while(isspace(*insert))
-        {
-            *insert++;
-            (*position)++;
-        }
-    }
-    if(*insert=='E' || *insert=='e')
-    {
-        *scientific=true;
-    }
-    if((*insert=='E' || *insert=='e') && *scientific==true)
-    {
-        if(digit_counter==0)
-        {
-            *insert++;
-            (*position)++;
-            if(isdigit(*insert) || *insert== '-' || *insert== '+')
-            {
-                if(isdigit(*insert))
-                {
-                    while(isdigit(*insert))
-                    {
-                        *insert++;
-                        (*position)++;
-                    }
-                    if (isspace(*insert))
-                    {
-                        while(isspace(*insert))
-                        {
-                            *insert++;
-                            (*position)++;
-                        }
-                    }
-                    *scientific==false;
-                }
-                else if(*insert== '-' || *insert== '+')
-                {
-                    *insert++;
-                    (*position)++;
-                    while(isdigit(*insert))
-                    {
-                        *insert++;
-                        (*position)++;
-                    }
-                    if (isspace(*insert))
-                    {
-                        while(isspace(*insert))
-                        {
-                            *insert++;
-                            (*position)++;
-                        }
-                    }
-                    *scientific==false;
-                }
-            }
-            else
-            {
-                printf("NUMBER ERROR!!!!");
-                return true;
-            }
-        }
-        else if(digit_counter>0)
-        {
-            *insert++;
-            (*position)++;
-            if(isdigit(*insert))
-            {
-                while(isdigit(*insert))
-                {
-                    *insert++;
-                    (*position)++;
-                }
-                if (isspace(*insert))
-                {
-                    while(isspace(*insert))
-                    {
-                        *insert++;
-                        (*position)++;
-                    }
-                }
-                *scientific==false;
-            }
-            else if(*insert== '-' || *insert== '+')
-            {
-                *insert++;
-                (*position)++;
-                if(isdigit(*insert))
-                {
-                    while(isdigit(*insert))
-                    {
-                        *insert++;
-                        (*position)++;
-                    }
-                    if (isspace(*insert))
-                    {
-                        while(isspace(*insert))
-                        {
-                            *insert++;
-                            (*position)++;
-                        }
-                    }
-                    *scientific==false;
-                }
-                else
-                {
-                    printf("NUMBER ERROR!!!!");
-                    return true;
-                }
-            }
-            else
-            {
-                printf("NUMBER ERROR!!!!");
-                return true;
-            }
-        }
-    }
-    if(*insert==']')
-    {
-        (*elements_count)++;
-        printf("The number of elements is %d\n",*elements_count);
-        *correct_value=true;
-        return true;
-    }
-    else if(*insert==',')
-    {
-        (*elements_count)++;
-        *insert++;
-        (*position)++;
-        while(isspace(*insert))
-        {
-            *insert++;
-            (*position)++;
-        }
-        if(*insert=='\"')
-        {
-            *insert++;
-            (*position)++;
-            *digit_block=1;
-        }
-    }
-    else if(*insert=='.')
-    {
-        return false;
-    }
-    else
-    {
-        printf("NUMBER ERROR!!!!");
-        return true;
-    }
-    return false;
-}
-#line 9198 "lex.yy.c"
-#line 9199 "lex.yy.c"
+void print_token(int token);
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
+#line 9038 "lex.yy.c"
+#line 9039 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -9412,9 +9252,9 @@ YY_DECL
 		}
 
 	{
-#line 189 "excfle.l"
+#line 29 "excfle.l"
 
-#line 9418 "lex.yy.c"
+#line 9258 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -9483,19 +9323,18 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 190 "excfle.l"
-{printf("Integer at line %d\n", yylineno); return POS_INTEGER; }
+#line 30 "excfle.l"
+{print_token(POS_INTEGER); return POS_INTEGER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 191 "excfle.l"
-{printf("String at line %d\n", yylineno);return ANUM; }
+#line 31 "excfle.l"
+{print_token(ANUM); return ANUM; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 192 "excfle.l"
+#line 32 "excfle.l"
 {
-    printf("Array mult at line %d\n", yylineno);
     char *insert = yytext;
     int length = yyleng;
     int position = 1;
@@ -9551,7 +9390,7 @@ YY_RULE_SETUP
             if(position==length)
             {
                 elements_count++;
-                printf("The number of elements is %d\n",elements_count);
+                //printf("The number of elements is %d\n",elements_count);
                 correct_value=true;
                 break;
             }
@@ -9562,7 +9401,7 @@ YY_RULE_SETUP
                 if(*insert==']')
                 {
                     elements_count++;
-                    printf("The number of elements is %d\n",elements_count);
+                    //printf("The number of elements is %d\n",elements_count);
                     correct_value=true;
                     stop=1;
                     break;
@@ -9570,7 +9409,7 @@ YY_RULE_SETUP
                 if(position==length)
                 {
                     elements_count++;
-                    printf("The number of elements is %d\n",elements_count);
+                    //printf("The number of elements is %d\n",elements_count);
                     correct_value=true;
                     stop=1;
                     break;
@@ -9663,7 +9502,8 @@ YY_RULE_SETUP
     }
     if(correct_value == true)
     {
-        printf("correct value\n");
+        //printf("correct value\n");
+        print_token(JSON_ARRAY);
         return JSON_ARRAY;
     }
     else
@@ -9674,36 +9514,36 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 369 "excfle.l"
+#line 209 "excfle.l"
 { }
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 370 "excfle.l"
+#line 210 "excfle.l"
 { }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 371 "excfle.l"
+#line 211 "excfle.l"
 { }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 372 "excfle.l"
-{ printf("Uknown at line %d\n", yylineno);}
+#line 212 "excfle.l"
+{ print_token(UNKNOWN); return UNKNOWN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 373 "excfle.l"
-{return 0;}
+#line 213 "excfle.l"
+{ print_token(YYEOF); return 0; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 374 "excfle.l"
+#line 214 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 9707 "lex.yy.c"
+#line 9547 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -10718,7 +10558,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 374 "excfle.l"
+#line 214 "excfle.l"
 
 
 int main(int argc, char *argv[])
@@ -10739,4 +10579,172 @@ int main(int argc, char *argv[])
     }while(token != 0);
     fclose(yyin);
     yyterminate();
+}
+
+void print_token(int token)
+{
+    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
+}
+
+bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
+{
+    int digit_counter=0;
+    while(isdigit(*insert))
+    {
+        *insert++;
+        (*position)++;
+        digit_counter++;
+    }
+    if (isspace(*insert))
+    {
+        while(isspace(*insert))
+        {
+            *insert++;
+            (*position)++;
+        }
+    }
+    if(*insert=='E' || *insert=='e')
+    {
+        *scientific=true;
+    }
+    if((*insert=='E' || *insert=='e') && *scientific==true)
+    {
+        if(digit_counter==0)
+        {
+            *insert++;
+            (*position)++;
+            if(isdigit(*insert) || *insert== '-' || *insert== '+')
+            {
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+                else if(*insert== '-' || *insert== '+')
+                {
+                    *insert++;
+                    (*position)++;
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+            }
+            else
+            {
+                printf("NUMBER ERROR!!!!");
+                return true;
+            }
+        }
+        else if(digit_counter>0)
+        {
+            *insert++;
+            (*position)++;
+            if(isdigit(*insert))
+            {
+                while(isdigit(*insert))
+                {
+                    *insert++;
+                    (*position)++;
+                }
+                if (isspace(*insert))
+                {
+                    while(isspace(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                }
+                *scientific==false;
+            }
+            else if(*insert== '-' || *insert== '+')
+            {
+                *insert++;
+                (*position)++;
+                if(isdigit(*insert))
+                {
+                    while(isdigit(*insert))
+                    {
+                        *insert++;
+                        (*position)++;
+                    }
+                    if (isspace(*insert))
+                    {
+                        while(isspace(*insert))
+                        {
+                            *insert++;
+                            (*position)++;
+                        }
+                    }
+                    *scientific==false;
+                }
+                else
+                {
+                    printf("NUMBER ERROR!!!!");
+                    return true;
+                }
+            }
+            else
+            {
+                printf("NUMBER ERROR!!!!");
+                return true;
+            }
+        }
+    }
+    if(*insert==']')
+    {
+        (*elements_count)++;
+        //printf("The number of elements is %d\n",*elements_count);
+        *correct_value=true;
+        return true;
+    }
+    else if(*insert==',')
+    {
+        (*elements_count)++;
+        *insert++;
+        (*position)++;
+        while(isspace(*insert))
+        {
+            *insert++;
+            (*position)++;
+        }
+        if(*insert=='\"')
+        {
+            *insert++;
+            (*position)++;
+            *digit_block=1;
+        }
+    }
+    else if(*insert=='.')
+    {
+        return false;
+    }
+    else
+    {
+        printf("NUMBER ERROR!!!!");
+        return true;
+    }
+    return false;
 }

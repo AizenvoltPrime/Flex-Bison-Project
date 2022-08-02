@@ -8,7 +8,7 @@ int yylex();
 int yyerror(const char *s);
 %}
 
-%token JSON_NUMBER POS_INTEGER JSON_STRING JSON_ARRAY ANUM
+%token JSON_NUMBER POS_INTEGER JSON_STRING JSON_ARRAY ANUM UNKNOWN
 %token EOL
 
 %%
