@@ -74,10 +74,12 @@
 #include <string.h>
 #define YYSTYPE char *
 
+extern FILE *yyin;
+
 int yylex();
 int yyerror(const char *s);
 
-#line 81 "excfle.tab.c"
+#line 83 "excfle.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -505,7 +507,7 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    16,    16,    17,    18,    21,    23
+       0,    18,    18,    19,    20,    23,    25
 };
 #endif
 
@@ -1063,31 +1065,31 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* calclist: calclist game_id EOL  */
-#line 17 "excfle.y"
+#line 19 "excfle.y"
                        {printf("=%d\n", atoi(yyvsp[-1]));}
-#line 1069 "excfle.tab.c"
+#line 1071 "excfle.tab.c"
     break;
 
   case 4: /* calclist: calclist string EOL  */
-#line 18 "excfle.y"
+#line 20 "excfle.y"
                       {printf("=%s\n",yyvsp[-1]);}
-#line 1075 "excfle.tab.c"
+#line 1077 "excfle.tab.c"
     break;
 
   case 5: /* game_id: POS_INTEGER  */
-#line 21 "excfle.y"
+#line 23 "excfle.y"
                      {yyval = yyvsp[0];}
-#line 1081 "excfle.tab.c"
+#line 1083 "excfle.tab.c"
     break;
 
   case 6: /* string: ANUM  */
-#line 23 "excfle.y"
+#line 25 "excfle.y"
              {yyval = yyvsp[0];}
-#line 1087 "excfle.tab.c"
+#line 1089 "excfle.tab.c"
     break;
 
 
-#line 1091 "excfle.tab.c"
+#line 1093 "excfle.tab.c"
 
       default: break;
     }
@@ -1280,13 +1282,22 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 24 "excfle.y"
+#line 26 "excfle.y"
 
-int main(int argc, char **argv)
-{
-}
 
-int yyerror(const char *s)
+int main(int argc, char *argv[])
 {
-    fprintf(stderr, "error: %s\n", s);
+    int token;
+    if(argc>1)
+    {
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
+    }
+    yyparse();
+    fclose(yyin);
+    return 0;
 }

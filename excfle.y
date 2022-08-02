@@ -4,12 +4,14 @@
 #include <string.h>
 #define YYSTYPE char *
 
+extern FILE *yyin;
+
 int yylex();
 int yyerror(const char *s);
 %}
 
 %token JSON_NUMBER POS_INTEGER JSON_STRING JSON_ARRAY ANUM UNKNOWN
-%token EOL EOF
+%token EOL
 
 %%
 
@@ -22,11 +24,20 @@ game_id: POS_INTEGER {$$ = $1;};
 
 string: ANUM {$$ = $1;};
 %%
-int main(int argc, char **argv)
-{
-}
 
-int yyerror(const char *s)
+int main(int argc, char *argv[])
 {
-    fprintf(stderr, "error: %s\n", s);
+    int token;
+    if(argc>1)
+    {
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
+    }
+    yyparse();
+    fclose(yyin);
+    return 0;
 }

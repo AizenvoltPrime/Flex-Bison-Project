@@ -10768,26 +10768,6 @@ void yyfree (void * ptr )
 #line 216 "excfle.l"
 
 
-int main(int argc, char *argv[])
-{
-    int token;
-    if(argc>1)
-    {
-        yyin = fopen(argv[1], "r");
-        if (yyin == NULL)
-        {
-            perror("Error opening file");
-            return -1;
-        }
-    }
-    do
-    {
-        token = yylex();
-    }while(token != 0);
-    fclose(yyin);
-    yyterminate();
-}
-
 void yyerror(const char* error)
 {
     printf("ERROR AT LINE %d - ERROR TYPE IS: %s\n",yylineno,error);
