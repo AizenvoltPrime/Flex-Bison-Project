@@ -13,6 +13,8 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 %option noyywrap
 %option yylineno
 
+open_bracket "{"
+close_bracket "}"
 open_quote "["
 close_quote "]"
 character [A-Za-z]
@@ -27,7 +29,10 @@ number (-?{integer})|(-?{decimal})|(-?{scientific})
 comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{number}))*
 array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
 false_array_catch {open_quote}.*{close_quote}
+
 %%
+{open_bracket} { print_token(OPEN_BRACKET); return OPEN_BRACKET; }
+{close_bracket} { print_token(CLOSE_BRACKET); return CLOSE_BRACKET; }
 {integer} {print_token(POS_INTEGER); return POS_INTEGER; }
 {string} {print_token(ANUM); return ANUM; }
 {array_multi} {
@@ -212,7 +217,7 @@ false_array_catch {open_quote}.*{close_quote}
 \n { }
 \r\n { }
 . { yyerror("Unrecognized character!"); return UNKNOWN; }
-<<EOF>> { print_token(YYEOF); return 0; }
+<<EOF>> { return YYEOF; }
 %%
 
 void yyerror(const char* error)

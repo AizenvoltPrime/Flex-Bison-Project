@@ -10,19 +10,23 @@ extern int yylex();
 extern void yyerror(const char *s);
 %}
 
-%token JSON_NUMBER POS_INTEGER JSON_STRING JSON_ARRAY ANUM UNKNOWN
-%token EOL
+%define parse.error verbose
+
+%token OPEN_BRACKET "opening bracket"
+%token CLOSE_BRACKET "closing bracket"
+%token JSON_NUMBER "json number"
+%token POS_INTEGER "positive integer"
+%token JSON_STRING "json string"
+%token JSON_ARRAY "json array"
+%token ANUM "alpharithmetic"
+%token UNKNOWN "unknown"
+%token EOL "end of line"
+%token YYEOF 0 "end of file"
 
 %%
 
-calclist: /* nothing */
-| calclist game_id EOL {printf("=%d\n", atoi($2));}
-| calclist string EOL {printf("=%s\n",$2);}
-;
+program: OPEN_BRACKET POS_INTEGER CLOSE_BRACKET
 
-game_id: POS_INTEGER {$$ = $1;};
-
-string: ANUM {$$ = $1;};
 %%
 
 int main(int argc, char *argv[])
