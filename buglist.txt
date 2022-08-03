@@ -10,3 +10,10 @@ Incorrect Values:
 [2.E]
 [2.2E]
 [2.222E]
+
+
+
+obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote
+                | OPEN_BRACKET OPEN_QUOTE cl_quote cl_bracket
+                | ANUM COLON OPEN_QUOTE arr_element cl_quote
+                shift reduce problem

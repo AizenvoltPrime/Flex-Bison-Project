@@ -13,6 +13,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 %option noyywrap
 %option yylineno
 
+comma ","
 colon ":"
 open_bracket "{"
 close_bracket "}"
@@ -215,6 +216,10 @@ false_array_catch {open_quote}.*{close_quote}
     }
 }
 {false_array_catch} {yyerror("Wrong value in array!");}
+{open_quote} { print_token(OPEN_QUOTE); return OPEN_QUOTE; }
+{close_quote} { print_token(CLOSE_QUOTE); return CLOSE_QUOTE; }
+{comma} { print_token(COMMA); return COMMA; }
+{decimal} { print_token(DECIMAL); return DECIMAL; }
 [ \t] { }
 \n { }
 \r\n { }

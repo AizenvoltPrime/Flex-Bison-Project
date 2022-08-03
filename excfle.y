@@ -13,10 +13,14 @@ extern void yyerror(const char *s);
 %define parse.error verbose
 
 %token COLON "colon"
+%token COMMA "comma"
+%token OPEN_QUOTE "opening quote"
+%token CLOSE_QUOTE "closing quote"
 %token OPEN_BRACKET "opening bracket"
 %token CLOSE_BRACKET "closing bracket"
 %token JSON_NUMBER "json number"
 %token POS_INTEGER "positive integer"
+%token DECIMAL "decimal number"
 %token JSON_STRING "json string"
 %token JSON_ARRAY "json array"
 %token ANUM "alpharithmetic"
@@ -26,7 +30,42 @@ extern void yyerror(const char *s);
 
 %%
 
-program: OPEN_BRACKET POS_INTEGER CLOSE_BRACKET
+object: OPEN_BRACKET obj_elems CLOSE_BRACKET
+        | OPEN_BRACKET CLOSE_BRACKET
+        | %empty 
+
+obj_elems:  ANUM COLON OPEN_BRACKET sm_obj_elements CLOSE_BRACKET COMMA obj_elems
+            | ANUM COLON OPEN_BRACKET sm_obj_elements CLOSE_BRACKET
+
+sm_obj_elements:    ANUM COLON sup_value COMMA sm_obj_elements
+                    | ANUM COLON sup_value
+                    
+sup_value:  value 
+            | nested_obj 
+            | obj_with_array 
+            | arr_with_objects
+
+nested_obj: OPEN_BRACKET sm_obj_elements CLOSE_BRACKET
+
+obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote obj_with_array
+                | OPEN_BRACKET OPEN_QUOTE cl_quote cl_bracket
+                | ANUM COLON OPEN_QUOTE arr_element cl_quote
+
+arr_with_objects: COLON OPEN_QUOTE sm_obj_elements CLOSE_QUOTE COMMA
+
+arr_element:    value COMMA arr_element 
+                | value
+
+
+cl_quote:   CLOSE_QUOTE COMMA
+            | CLOSE_QUOTE
+
+cl_bracket: CLOSE_BRACKET COMMA
+            | CLOSE_BRACKET
+
+value:  ANUM 
+        | POS_INTEGER
+        | DECIMAL
 
 %%
 
