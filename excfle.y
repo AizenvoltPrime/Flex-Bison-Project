@@ -12,6 +12,7 @@ extern void yyerror(const char *s);
 
 %define parse.error verbose
 
+%token COLON "colon"
 %token OPEN_BRACKET "opening bracket"
 %token CLOSE_BRACKET "closing bracket"
 %token JSON_NUMBER "json number"

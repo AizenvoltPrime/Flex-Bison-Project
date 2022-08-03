@@ -54,15 +54,16 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    OPEN_BRACKET = 258,            /* "opening bracket"  */
-    CLOSE_BRACKET = 259,           /* "closing bracket"  */
-    JSON_NUMBER = 260,             /* "json number"  */
-    POS_INTEGER = 261,             /* "positive integer"  */
-    JSON_STRING = 262,             /* "json string"  */
-    JSON_ARRAY = 263,              /* "json array"  */
-    ANUM = 264,                    /* "alpharithmetic"  */
-    UNKNOWN = 265,                 /* "unknown"  */
-    EOL = 266                      /* "end of line"  */
+    COLON = 258,                   /* "colon"  */
+    OPEN_BRACKET = 259,            /* "opening bracket"  */
+    CLOSE_BRACKET = 260,           /* "closing bracket"  */
+    JSON_NUMBER = 261,             /* "json number"  */
+    POS_INTEGER = 262,             /* "positive integer"  */
+    JSON_STRING = 263,             /* "json string"  */
+    JSON_ARRAY = 264,              /* "json array"  */
+    ANUM = 265,                    /* "alpharithmetic"  */
+    UNKNOWN = 266,                 /* "unknown"  */
+    EOL = 267                      /* "end of line"  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

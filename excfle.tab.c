@@ -110,17 +110,18 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_OPEN_BRACKET = 3,               /* "opening bracket"  */
-  YYSYMBOL_CLOSE_BRACKET = 4,              /* "closing bracket"  */
-  YYSYMBOL_JSON_NUMBER = 5,                /* "json number"  */
-  YYSYMBOL_POS_INTEGER = 6,                /* "positive integer"  */
-  YYSYMBOL_JSON_STRING = 7,                /* "json string"  */
-  YYSYMBOL_JSON_ARRAY = 8,                 /* "json array"  */
-  YYSYMBOL_ANUM = 9,                       /* "alpharithmetic"  */
-  YYSYMBOL_UNKNOWN = 10,                   /* "unknown"  */
-  YYSYMBOL_EOL = 11,                       /* "end of line"  */
-  YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
-  YYSYMBOL_program = 13                    /* program  */
+  YYSYMBOL_COLON = 3,                      /* "colon"  */
+  YYSYMBOL_OPEN_BRACKET = 4,               /* "opening bracket"  */
+  YYSYMBOL_CLOSE_BRACKET = 5,              /* "closing bracket"  */
+  YYSYMBOL_JSON_NUMBER = 6,                /* "json number"  */
+  YYSYMBOL_POS_INTEGER = 7,                /* "positive integer"  */
+  YYSYMBOL_JSON_STRING = 8,                /* "json string"  */
+  YYSYMBOL_JSON_ARRAY = 9,                 /* "json array"  */
+  YYSYMBOL_ANUM = 10,                      /* "alpharithmetic"  */
+  YYSYMBOL_UNKNOWN = 11,                   /* "unknown"  */
+  YYSYMBOL_EOL = 12,                       /* "end of line"  */
+  YYSYMBOL_YYACCEPT = 13,                  /* $accept  */
+  YYSYMBOL_program = 14                    /* program  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -451,7 +452,7 @@ union yyalloc
 #define YYLAST   3
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
@@ -460,7 +461,7 @@ union yyalloc
 #define YYNSTATES  6
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   266
+#define YYMAXUTOK   267
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -500,14 +501,14 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9,    10,    11,    12
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    28,    28
+       0,    29,    29
 };
 #endif
 
@@ -523,10 +524,11 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "\"opening bracket\"",
-  "\"closing bracket\"", "\"json number\"", "\"positive integer\"",
-  "\"json string\"", "\"json array\"", "\"alpharithmetic\"", "\"unknown\"",
-  "\"end of line\"", "$accept", "program", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "\"colon\"",
+  "\"opening bracket\"", "\"closing bracket\"", "\"json number\"",
+  "\"positive integer\"", "\"json string\"", "\"json array\"",
+  "\"alpharithmetic\"", "\"unknown\"", "\"end of line\"", "$accept",
+  "program", YY_NULLPTR
 };
 
 static const char *
@@ -536,7 +538,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-6)
+#define YYPACT_NINF (-7)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -550,7 +552,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -3,    -5,     2,    -1,    -6,    -6
+      -4,    -6,     2,    -2,    -7,    -7
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -564,7 +566,7 @@ static const yytype_int8 yydefact[] =
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -6,    -6
+      -7,    -7
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -583,20 +585,20 @@ static const yytype_int8 yytable[] =
 
 static const yytype_int8 yycheck[] =
 {
-       3,     6,     0,     4
+       4,     7,     0,     5
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    13,     6,     0,     4
+       0,     4,    14,     7,     0,     5
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    12,    13
+       0,    13,    14
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1336,7 +1338,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1340 "excfle.tab.c"
+#line 1342 "excfle.tab.c"
 
       default: break;
     }
@@ -1560,7 +1562,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 30 "excfle.y"
+#line 31 "excfle.y"
 
 
 int main(int argc, char *argv[])

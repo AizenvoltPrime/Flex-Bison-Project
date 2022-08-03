@@ -13,6 +13,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 %option noyywrap
 %option yylineno
 
+colon ":"
 open_bracket "{"
 close_bracket "}"
 open_quote "["
@@ -31,6 +32,7 @@ array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{nu
 false_array_catch {open_quote}.*{close_quote}
 
 %%
+{colon} { print_token(COLON); return COLON; }
 {open_bracket} { print_token(OPEN_BRACKET); return OPEN_BRACKET; }
 {close_bracket} { print_token(CLOSE_BRACKET); return CLOSE_BRACKET; }
 {integer} {print_token(POS_INTEGER); return POS_INTEGER; }
