@@ -51,20 +51,24 @@ obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote obj_with
                 | OPEN_BRACKET OPEN_QUOTE cl_quote cl_bracket
                 | ANUM COLON OPEN_QUOTE arr_element cl_quote
 
-arr_with_objects: OPEN_QUOTE OPEN_BRACKET sm_obj_elements CLOSE_QUOTE COMMA
+arr_with_objects:   OPEN_QUOTE OPEN_BRACKET sm_obj_elements cl_bracket OPEN_BRACKET arr_with_objects
+                    | sm_obj_elements cl_bracket OPEN_BRACKET arr_with_objects
+                    | sm_obj_elements CLOSE_BRACKET CLOSE_QUOTE
 
 arr_element:    value COMMA arr_element 
                 | value
 
 cl_quote:   CLOSE_QUOTE COMMA
             | CLOSE_QUOTE
+            | %empty
 
 cl_bracket: CLOSE_BRACKET COMMA
             | CLOSE_BRACKET
-
+            
 value:  ANUM 
         | POS_INTEGER
         | DECIMAL
+        | JSON_ARRAY
 
 %%
 

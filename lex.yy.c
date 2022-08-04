@@ -10938,6 +10938,11 @@ YY_RULE_SETUP
             *insert++;
             position++;
         }
+        if(*insert==']')
+        {
+            print_token(JSON_ARRAY);
+            return JSON_ARRAY;
+        }
     }
     if(*insert=='\"')
     {
@@ -11099,61 +11104,61 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 218 "excfle.l"
+#line 223 "excfle.l"
 {yyerror("Wrong value in array!");}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 219 "excfle.l"
+#line 224 "excfle.l"
 { print_token(OPEN_QUOTE); return OPEN_QUOTE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 220 "excfle.l"
+#line 225 "excfle.l"
 { print_token(CLOSE_QUOTE); return CLOSE_QUOTE; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 221 "excfle.l"
+#line 226 "excfle.l"
 { print_token(COMMA); return COMMA; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 222 "excfle.l"
+#line 227 "excfle.l"
 { print_token(DECIMAL); return DECIMAL; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 223 "excfle.l"
+#line 228 "excfle.l"
 { }
 	YY_BREAK
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 224 "excfle.l"
+#line 229 "excfle.l"
 { }
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 225 "excfle.l"
+#line 230 "excfle.l"
 { }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 226 "excfle.l"
+#line 231 "excfle.l"
 { yyerror("Unrecognized character!"); return UNKNOWN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 227 "excfle.l"
+#line 232 "excfle.l"
 { return YYEOF; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 228 "excfle.l"
+#line 233 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 11157 "lex.yy.c"
+#line 11162 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -12168,7 +12173,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 228 "excfle.l"
+#line 233 "excfle.l"
 
 
 void yyerror(const char* error)

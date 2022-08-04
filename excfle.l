@@ -57,6 +57,11 @@ false_array_catch {open_quote}.*{close_quote}
             *insert++;
             position++;
         }
+        if(*insert==']')
+        {
+            print_token(JSON_ARRAY);
+            return JSON_ARRAY;
+        }
     }
     if(*insert=='\"')
     {
