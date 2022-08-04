@@ -37,12 +37,12 @@ object: OPEN_BRACKET obj_elems CLOSE_BRACKET
 obj_elems:  ANUM COLON OPEN_BRACKET sm_obj_elements CLOSE_BRACKET COMMA obj_elems
             | ANUM COLON OPEN_BRACKET sm_obj_elements CLOSE_BRACKET
 
-sm_obj_elements:    ANUM COLON sup_value COMMA sm_obj_elements
-                    | ANUM COLON sup_value
+sm_obj_elements:    ANUM COLON sub_value COMMA sm_obj_elements
+                    | ANUM COLON sub_value
                     
-sup_value:  value 
+sub_value:  value 
             | nested_obj 
-            | obj_with_array 
+            | obj_with_array CLOSE_BRACKET
             | arr_with_objects
 
 nested_obj: OPEN_BRACKET sm_obj_elements CLOSE_BRACKET
@@ -51,11 +51,10 @@ obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote obj_with
                 | OPEN_BRACKET OPEN_QUOTE cl_quote cl_bracket
                 | ANUM COLON OPEN_QUOTE arr_element cl_quote
 
-arr_with_objects: COLON OPEN_QUOTE sm_obj_elements CLOSE_QUOTE COMMA
+arr_with_objects: OPEN_QUOTE OPEN_BRACKET sm_obj_elements CLOSE_QUOTE COMMA
 
 arr_element:    value COMMA arr_element 
                 | value
-
 
 cl_quote:   CLOSE_QUOTE COMMA
             | CLOSE_QUOTE
