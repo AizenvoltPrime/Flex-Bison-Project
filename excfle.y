@@ -12,63 +12,78 @@ extern void yyerror(const char *s);
 
 %define parse.error verbose
 
-%token COLON "colon"
-%token COMMA "comma"
-%token OPEN_QUOTE "opening quote"
-%token CLOSE_QUOTE "closing quote"
-%token OPEN_BRACKET "opening bracket"
-%token CLOSE_BRACKET "closing bracket"
-%token JSON_NUMBER "json number"
-%token POS_INTEGER "positive integer"
-%token DECIMAL "decimal number"
-%token JSON_STRING "json string"
-%token JSON_ARRAY "json array"
-%token ANUM "alpharithmetic"
-%token UNKNOWN "unknown"
-%token EOL "end of line"
-%token YYEOF 0 "end of file"
+%token                              COLON                                           "colon"
+%token                              COMMA                                           "comma"
+%token                              OPEN_QUOTE                                      "opening quote"
+%token                              CLOSE_QUOTE                                     "closing quote"
+%token                              OPEN_BRACKET                                    "opening bracket"
+%token                              CLOSE_BRACKET                                   "closing bracket"
+%token                              JSON_NUMBER                                     "json number"
+%token                              POS_INTEGER                                     "positive integer"
+%token                              DECIMAL                                         "decimal number"
+%token                              JSON_STRING                                     "json string"
+%token                              JSON_ARRAY                                      "json array"
+%token                              ANUM                                            "alpharithmetic"
+%token                              UNKNOWN                                         "unknown"
+%token                              EOL                                             "end of line"
+%token                              YYEOF                     0                     "end of file"
+%token                              LAST                                            "last"
+%token                              ACTIVE                                          "active"
+%token                              GAMEID                                          "gameId"
+%token                              DRAWID                                          "drawId"
+%token                              DRAWTIME                                        "drawTime"
+%token                              STATUS                                          "status"
+%token                              DRAWBREAK                                       "drawBreak"
+%token                              VISUALDRAW                                      "visualDraw"
+%token                              PRICEPOINTS                                     "pricePoints"
+%token                              AMOUNT                                          "amount"
+%token                              WINNINGNUMBERS                                  "winningNumbers"
+%token                              PRIZECATEGORIES                                 "prizeCategories"
+%token                              WAGERSTATISTICS                                 "wagerStatistics"
+%token                              LIST                                            "list"
+%token                              BONUS                                           "bonus"
+%token                              ID                                              "id"
+%token                              DIVIDENT                                        "divident"
+%token                              WINNERS                                         "winners"
+%token                              DISTRIBUTED                                     "distributed"
+%token                              JACKPOT                                         "jackpot"
+%token                              FIXED                                           "fixed"
+%token                              CATEGORYTYPE                                    "categoryType"
+%token                              GAMETYPE                                        "gameType"
+%token                              MINIMUMDISTRIBUTED                              "minimumDistributed"
+%token                              COLUMNS                                         "columns"
+%token                              WAGERS                                          "wagers"
+%token                              ADDON                                           "addOn"
+
 
 %%
 
-object: OPEN_BRACKET obj_elems CLOSE_BRACKET
-        | OPEN_BRACKET CLOSE_BRACKET
-        | %empty 
+file:       OPEN_BRACKET LAST last ACTIVE active CLOSE_BRACKET
+            | %empty 
 
-obj_elems:  ANUM COLON OPEN_BRACKET sm_obj_elements CLOSE_BRACKET COMMA obj_elems
-            | ANUM COLON OPEN_BRACKET sm_obj_elements CLOSE_BRACKET
+last:       COLON OPEN_BRACKET GAMEID COLON POS_INTEGER COMMA DRAWID COLON POS_INTEGER COMMA DRAWTIME COLON POS_INTEGER COMMA STATUS COLON ANUM COMMA DRAWBREAK COLON POS_INTEGER COMMA VISUALDRAW COLON POS_INTEGER COMMA PRICEPOINTS pricePoints WINNINGNUMBERS winningNumbers PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET COMMA
 
-sm_obj_elements:    ANUM COLON sub_value COMMA sm_obj_elements
-                    | ANUM COLON sub_value
-                    
-sub_value:  value 
-            | nested_obj 
-            | obj_with_array CLOSE_BRACKET
-            | arr_with_objects
+pricePoints: COLON OPEN_BRACKET AMOUNT COLON DECIMAL CLOSE_BRACKET COMMA
 
-nested_obj: OPEN_BRACKET sm_obj_elements CLOSE_BRACKET
+winningNumbers: COLON OPEN_BRACKET LIST list BONUS bonus CLOSE_BRACKET COMMA
 
-obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote obj_with_array
-                | OPEN_BRACKET OPEN_QUOTE cl_quote cl_bracket
-                | ANUM COLON OPEN_QUOTE arr_element cl_quote
+list: COLON OPEN_QUOTE arr_element CLOSE_QUOTE COMMA
 
-arr_with_objects:   OPEN_QUOTE OPEN_BRACKET sm_obj_elements cl_bracket OPEN_BRACKET arr_with_objects
-                    | sm_obj_elements cl_bracket OPEN_BRACKET arr_with_objects
-                    | sm_obj_elements CLOSE_BRACKET CLOSE_QUOTE
+arr_element:    POS_INTEGER COMMA arr_element 
+                | POS_INTEGER
 
-arr_element:    value COMMA arr_element 
-                | value
+bonus: COLON OPEN_QUOTE POS_INTEGER CLOSE_QUOTE
 
-cl_quote:   CLOSE_QUOTE COMMA
-            | CLOSE_QUOTE
-            | %empty
+prizeCategories: COLON OPEN_QUOTE prizeCategoriesElems CLOSE_QUOTE COMMA
 
-cl_bracket: CLOSE_BRACKET COMMA
-            | CLOSE_BRACKET
-            
-value:  ANUM 
-        | POS_INTEGER
-        | DECIMAL
-        | JSON_ARRAY
+prizeCategoriesElems:    OPEN_BRACKET ID COLON POS_INTEGER COMMA DIVIDENT COLON DECIMAL COMMA WINNERS COLON POS_INTEGER COMMA DISTRIBUTED COLON DECIMAL COMMA JACKPOT COLON DECIMAL COMMA FIXED COLON DECIMAL COMMA CATEGORYTYPE COLON POS_INTEGER COMMA GAMETYPE COLON ANUM CLOSE_BRACKET COMMA
+                        | OPEN_BRACKET ID COLON POS_INTEGER COMMA DIVIDENT COLON DECIMAL COMMA WINNERS COLON POS_INTEGER COMMA DISTRIBUTED COLON DECIMAL COMMA JACKPOT COLON DECIMAL COMMA FIXED COLON DECIMAL COMMA CATEGORYTYPE COLON POS_INTEGER COMMA GAMETYPE COLON ANUM CLOSE_BRACKET
+
+wagerStatistics:  COLON OPEN_BRACKET wagerStatisticsElems CLOSE_BRACKET
+
+wagerStatisticsElems:  COLUMNS COLON POS_INTEGER COMMA WAGERS COLON POS_INTEGER COMMA ADDON COLON JSON_ARRAY
+
+active: COLON OPEN_BRACKET GAMEID COLON POS_INTEGER COMMA DRAWID COLON POS_INTEGER COMMA DRAWTIME COLON POS_INTEGER STATUS COLON ANUM COMMA DRAWBREAK COLON POS_INTEGER COMMA VISUALDRAW COLON POS_INTEGER COMMA PRICEPOINTS pricePoints PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET COMMA
 
 %%
 

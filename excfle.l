@@ -13,31 +13,60 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 %option noyywrap
 %option yylineno
 
-comma ","
-colon ":"
-open_bracket "{"
-close_bracket "}"
-open_quote "["
-close_quote "]"
-character [A-Za-z]
-digit [0-9]
-whitespace [ ]*
-string \"(([A-Za-z])|([0-9]))*\"
-json_string \".*\"
-integer {digit}+
-decimal {integer}?\.{digit}*
-scientific {decimal}[Ee][+-]?{integer}*
-number (-?{integer})|(-?{decimal})|(-?{scientific})
-comma_mult (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{number}))*
-array_multi ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
-false_array_catch {open_quote}.*{close_quote}
+last                                \""last"\"
+active                              \""active"\"
+gameId                              \""gameId"\"
+drawId                              \""drawId"\"
+drawTime                            \""drawTime"\"
+status                              \""status"\"
+drawBreak                           \""drawBreak"\"
+visualDraw                          \""visualDraw"\"
+pricePoints                         \""pricePoints"\"
+amount                              \""amount"\"
+winningNumbers                      \""winningNumbers"\"
+prizeCategories                     \""prizeCategories"\"
+wagerStatistics                     \""wagerStatistics"\"
+list                                \""list"\"
+bonus                               \""bonus"\"
+id                                  \""id"\"
+divident                            \""divident"\"
+winners                             \""winners"\"
+distributed                         \""distributed"\"
+jackpot                             \""jackpot"\"
+fixed                               \""fixed"\"
+categoryType                        \""categoryType"\"
+gameType                            \""gameType"\"
+minimumDistributed                  \""minimumDistributed"\"
+columns                             \""columns"\"
+wagers                              \""wagers"\"
+addOn                               \""addOn"\"
+
+comma                               ","
+colon                               ":"
+open_bracket                        "{"
+close_bracket                       "}"
+open_quote                          "["
+close_quote                         "]"
+character                           [A-Za-z]
+digit                               [0-9]
+whitespace                          [ ]*
+string                              \"(([A-Za-z])|([0-9]))*\"
+json_string                         \".*\"
+integer                             {digit}+
+decimal                             {integer}?\.{digit}*
+scientific                          {decimal}[Ee][+-]?{integer}*
+number                              (-?{integer})|(-?{decimal})|(-?{scientific})
+comma_mult                          (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{number}))*
+array_multi                         ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
+false_array_catch                   {open_quote}.*{close_quote}
 
 %%
-{colon} { print_token(COLON); return COLON; }
-{open_bracket} { print_token(OPEN_BRACKET); return OPEN_BRACKET; }
-{close_bracket} { print_token(CLOSE_BRACKET); return CLOSE_BRACKET; }
-{integer} {print_token(POS_INTEGER); return POS_INTEGER; }
-{string} {print_token(ANUM); return ANUM; }
+
+{colon}                             { print_token(COLON); return COLON; }
+{open_bracket}                      { print_token(OPEN_BRACKET); return OPEN_BRACKET; }
+{close_bracket}                     { print_token(CLOSE_BRACKET); return CLOSE_BRACKET; }
+{integer}                           { print_token(POS_INTEGER); return POS_INTEGER; }
+{last}                              { print_token(LAST); return LAST; }
 {array_multi} {
     char *insert = yytext;
     int length = yyleng;
@@ -220,11 +249,41 @@ false_array_catch {open_quote}.*{close_quote}
         yyerror("Wrong value in array!");
     }
 }
-{false_array_catch} {yyerror("Wrong value in array!");}
-{open_quote} { print_token(OPEN_QUOTE); return OPEN_QUOTE; }
-{close_quote} { print_token(CLOSE_QUOTE); return CLOSE_QUOTE; }
-{comma} { print_token(COMMA); return COMMA; }
-{decimal} { print_token(DECIMAL); return DECIMAL; }
+
+{false_array_catch}             {yyerror("Wrong value in array!");}
+{open_quote}                    { print_token(OPEN_QUOTE); return OPEN_QUOTE; }
+{close_quote}                   { print_token(CLOSE_QUOTE); return CLOSE_QUOTE; }
+{comma}                         { print_token(COMMA); return COMMA; }
+{decimal}                       { print_token(DECIMAL); return DECIMAL; }
+{active}                        { print_token(ACTIVE); return ACTIVE; }
+{gameId}                        { print_token(GAMEID); return GAMEID; }
+{drawId}                        { print_token(DRAWID); return DRAWID; }
+{drawTime}                      { print_token(DRAWTIME); return DRAWTIME; }
+{status}                        { print_token(STATUS); return STATUS; }
+{drawBreak}                     { print_token(DRAWBREAK); return DRAWBREAK; }
+{visualDraw}                    { print_token(VISUALDRAW); return VISUALDRAW; }
+{pricePoints}                   { print_token(PRICEPOINTS); return PRICEPOINTS; }
+{amount}                        { print_token(AMOUNT); return AMOUNT; }
+{winningNumbers}                { print_token(WINNINGNUMBERS); return WINNINGNUMBERS; }
+{prizeCategories}               { print_token(PRIZECATEGORIES); return PRIZECATEGORIES; }                        
+{wagerStatistics}               { print_token(WAGERSTATISTICS); return WAGERSTATISTICS; }
+{list}                          { print_token(LIST); return LIST; }
+{bonus}                         { print_token(BONUS); return BONUS; }
+{id}                            { print_token(ID); return ID; }
+{divident}                      { print_token(DIVIDENT); return DIVIDENT; }
+{winners}                       { print_token(WINNERS); return WINNERS; }
+{distributed}                   { print_token(DISTRIBUTED); return DISTRIBUTED; }
+{jackpot}                       { print_token(JACKPOT); return JACKPOT; }
+{fixed}                         { print_token(FIXED); return FIXED; }
+{categoryType}                  { print_token(CATEGORYTYPE); return CATEGORYTYPE; }
+{gameType}                      { print_token(GAMETYPE); return GAMETYPE; }
+{minimumDistributed}            { print_token(MINIMUMDISTRIBUTED); return MINIMUMDISTRIBUTED; }
+{columns}                       { print_token(COLUMNS); return COLUMNS; }
+{wagers}                        { print_token(WAGERS); return WAGERS; }
+{addOn}                         { print_token(ADDON); return ADDON; }
+{string}                        { print_token(ANUM); return ANUM; }
+
+
 [ \t] { }
 \n { }
 \r\n { }

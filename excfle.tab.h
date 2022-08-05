@@ -67,7 +67,34 @@ extern int yydebug;
     JSON_ARRAY = 268,              /* "json array"  */
     ANUM = 269,                    /* "alpharithmetic"  */
     UNKNOWN = 270,                 /* "unknown"  */
-    EOL = 271                      /* "end of line"  */
+    EOL = 271,                     /* "end of line"  */
+    LAST = 272,                    /* "last"  */
+    ACTIVE = 273,                  /* "active"  */
+    GAMEID = 274,                  /* "gameId"  */
+    DRAWID = 275,                  /* "drawId"  */
+    DRAWTIME = 276,                /* "drawTime"  */
+    STATUS = 277,                  /* "status"  */
+    DRAWBREAK = 278,               /* "drawBreak"  */
+    VISUALDRAW = 279,              /* "visualDraw"  */
+    PRICEPOINTS = 280,             /* "pricePoints"  */
+    AMOUNT = 281,                  /* "amount"  */
+    WINNINGNUMBERS = 282,          /* "winningNumbers"  */
+    PRIZECATEGORIES = 283,         /* "prizeCategories"  */
+    WAGERSTATISTICS = 284,         /* "wagerStatistics"  */
+    LIST = 285,                    /* "list"  */
+    BONUS = 286,                   /* "bonus"  */
+    ID = 287,                      /* "id"  */
+    DIVIDENT = 288,                /* "divident"  */
+    WINNERS = 289,                 /* "winners"  */
+    DISTRIBUTED = 290,             /* "distributed"  */
+    JACKPOT = 291,                 /* "jackpot"  */
+    FIXED = 292,                   /* "fixed"  */
+    CATEGORYTYPE = 293,            /* "categoryType"  */
+    GAMETYPE = 294,                /* "gameType"  */
+    MINIMUMDISTRIBUTED = 295,      /* "minimumDistributed"  */
+    COLUMNS = 296,                 /* "columns"  */
+    WAGERS = 297,                  /* "wagers"  */
+    ADDON = 298                    /* "addOn"  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
