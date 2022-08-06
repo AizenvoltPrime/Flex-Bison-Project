@@ -5,9 +5,13 @@
 #define YYSTYPE char *
 #include "excfle.tab.h"
 
-void print_token(int token);
+void minimumdist_error_check(int token);
 void yyerror(const char* error);
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
+
+int temp=0;
+int token_counter=0;
+int temp_position=0;
 %}
 
 %option noyywrap
@@ -62,10 +66,10 @@ false_array_catch                   {open_quote}.*{close_quote}
 
 %%
 
-{open_bracket}                      { print_token(OPEN_BRACKET); return OPEN_BRACKET; }
-{close_bracket}                     { print_token(CLOSE_BRACKET); return CLOSE_BRACKET; }
-{integer}                           { print_token(POS_INTEGER); return POS_INTEGER; }
-{last}                              { print_token(LAST); return LAST; }
+{open_bracket}                      { minimumdist_error_check(OPEN_BRACKET); return OPEN_BRACKET; }
+{close_bracket}                     { minimumdist_error_check(CLOSE_BRACKET); return CLOSE_BRACKET; }
+{integer}                           { minimumdist_error_check(POS_INTEGER); return POS_INTEGER; }
+{last}                              { minimumdist_error_check(LAST); return LAST; }
 {array_multi} {
     char *insert = yytext;
     int length = yyleng;
@@ -87,7 +91,7 @@ false_array_catch                   {open_quote}.*{close_quote}
         }
         if(*insert==']')
         {
-            print_token(JSON_ARRAY);
+            minimumdist_error_check(JSON_ARRAY);
             return JSON_ARRAY;
         }
     }
@@ -240,7 +244,7 @@ false_array_catch                   {open_quote}.*{close_quote}
     if(correct_value == true)
     {
         //printf("correct value\n");
-        print_token(JSON_ARRAY);
+        minimumdist_error_check(JSON_ARRAY);
         return JSON_ARRAY;
     }
     else
@@ -250,44 +254,54 @@ false_array_catch                   {open_quote}.*{close_quote}
 }
 
 {false_array_catch}             {yyerror("Wrong value in array!");}
-{open_quote}                    { print_token(OPEN_QUOTE); return OPEN_QUOTE; }
-{close_quote}                   { print_token(CLOSE_QUOTE); return CLOSE_QUOTE; }
-{comma}                         { print_token(COMMA); return COMMA; }
-{decimal}                       { print_token(DECIMAL); return DECIMAL; }
-{active}                        { print_token(ACTIVE); return ACTIVE; }
-{gameId}                        { print_token(GAMEID); return GAMEID; }
-{drawId}                        { print_token(DRAWID); return DRAWID; }
-{drawTime}                      { print_token(DRAWTIME); return DRAWTIME; }
-{status}                        { print_token(STATUS); return STATUS; }
-{drawBreak}                     { print_token(DRAWBREAK); return DRAWBREAK; }
-{visualDraw}                    { print_token(VISUALDRAW); return VISUALDRAW; }
-{pricePoints}                   { print_token(PRICEPOINTS); return PRICEPOINTS; }
-{amount}                        { print_token(AMOUNT); return AMOUNT; }
-{winningNumbers}                { print_token(WINNINGNUMBERS); return WINNINGNUMBERS; }
-{prizeCategories}               { print_token(PRIZECATEGORIES); return PRIZECATEGORIES; }                        
-{wagerStatistics}               { print_token(WAGERSTATISTICS); return WAGERSTATISTICS; }
-{list}                          { print_token(LIST); return LIST; }
-{bonus}                         { print_token(BONUS); return BONUS; }
-{id}                            { print_token(ID); return ID; }
-{divident}                      { print_token(DIVIDENT); return DIVIDENT; }
-{winners}                       { print_token(WINNERS); return WINNERS; }
-{distributed}                   { print_token(DISTRIBUTED); return DISTRIBUTED; }
-{jackpot}                       { print_token(JACKPOT); return JACKPOT; }
-{fixed}                         { print_token(FIXED); return FIXED; }
-{categoryType}                  { print_token(CATEGORYTYPE); return CATEGORYTYPE; }
-{gameType}                      { print_token(GAMETYPE); return GAMETYPE; }
-{minimumDistributed}            { print_token(MINIMUMDISTRIBUTED); return MINIMUMDISTRIBUTED; }
-{columns}                       { print_token(COLUMNS); return COLUMNS; }
-{wagers}                        { print_token(WAGERS); return WAGERS; }
-{addOn}                         { print_token(ADDON); return ADDON; }
-{string}                        { print_token(ANUM); return ANUM; }
-
+{open_quote}                    { minimumdist_error_check(OPEN_QUOTE); return OPEN_QUOTE; }
+{close_quote}                   { minimumdist_error_check(CLOSE_QUOTE); return CLOSE_QUOTE; }
+{comma}                         { minimumdist_error_check(COMMA); return COMMA; }
+{decimal}                       { minimumdist_error_check(DECIMAL); return DECIMAL; }
+{active}                        { minimumdist_error_check(ACTIVE); return ACTIVE; }
+{gameId}                        { minimumdist_error_check(GAMEID); return GAMEID; }
+{drawId}                        { minimumdist_error_check(DRAWID); return DRAWID; }
+{drawTime}                      { minimumdist_error_check(DRAWTIME); return DRAWTIME; }
+{status}                        { minimumdist_error_check(STATUS); return STATUS; }
+{drawBreak}                     { minimumdist_error_check(DRAWBREAK); return DRAWBREAK; }
+{visualDraw}                    { minimumdist_error_check(VISUALDRAW); return VISUALDRAW; }
+{pricePoints}                   { minimumdist_error_check(PRICEPOINTS); return PRICEPOINTS; }
+{amount}                        { minimumdist_error_check(AMOUNT); return AMOUNT; }
+{winningNumbers}                { minimumdist_error_check(WINNINGNUMBERS); return WINNINGNUMBERS; }
+{prizeCategories}               { minimumdist_error_check(PRIZECATEGORIES); return PRIZECATEGORIES; }                        
+{wagerStatistics}               { minimumdist_error_check(WAGERSTATISTICS); return WAGERSTATISTICS; }
+{list}                          { minimumdist_error_check(LIST); return LIST; }
+{bonus}                         { minimumdist_error_check(BONUS); return BONUS; }
+{id}                            { minimumdist_error_check(ID); return ID; }
+{divident}                      { minimumdist_error_check(DIVIDENT); return DIVIDENT; }
+{winners}                       { minimumdist_error_check(WINNERS); return WINNERS; }
+{distributed}                   { minimumdist_error_check(DISTRIBUTED); return DISTRIBUTED; }
+{jackpot}                       { minimumdist_error_check(JACKPOT); return JACKPOT; }
+{fixed}                         { minimumdist_error_check(FIXED); return FIXED; }
+{categoryType}                  { minimumdist_error_check(CATEGORYTYPE); return CATEGORYTYPE; }
+{gameType}                      { minimumdist_error_check(GAMETYPE); return GAMETYPE; }
+{minimumDistributed}            { 
+        if(token_counter-22==temp_position && temp==1)
+        {
+            minimumdist_error_check(MINIMUMDISTRIBUTED);
+            return MINIMUMDISTRIBUTED; 
+        }
+        else
+        {
+            yyerror("id of minimumDistributed is not 1");
+        }
+    } 
+{columns}                       { minimumdist_error_check(COLUMNS); return COLUMNS; }
+{wagers}                        { minimumdist_error_check(WAGERS); return WAGERS; }
+{addOn}                         { minimumdist_error_check(ADDON); return ADDON; }
+{string}                        { minimumdist_error_check(ANUM); return ANUM; }
+{character}+                    { return INVALID_STRING; }
 
 [ \t] { }
 \n { }
 \r\n { }
 . { yyerror("Unrecognized character!"); return UNKNOWN; }
-<<EOF>> { return YYEOF; }
+<<EOF>> { printf("File had no errors.\n"); return YYEOF; }
 %%
 
 void yyerror(const char* error)
@@ -296,9 +310,14 @@ void yyerror(const char* error)
     exit(EXIT_FAILURE);
 }
 
-void print_token(int token)
+void minimumdist_error_check(int token)
 {
-    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
+    token_counter++;
+    if(atoi(yytext)==1)
+    {
+        temp=atoi(yytext);
+        temp_position=token_counter;
+    }
 }
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)

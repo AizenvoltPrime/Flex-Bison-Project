@@ -53,6 +53,7 @@ extern void yyerror(const char *s);
 %token                              COLUMNS                             "columns"
 %token                              WAGERS                              "wagers"
 %token                              ADDON                               "addOn"
+%token                              INVALID_STRING                               "alpharithmetic without quotes"
 
 
 %%
@@ -90,17 +91,33 @@ active: OPEN_BRACKET GAMEID POS_INTEGER COMMA DRAWID POS_INTEGER COMMA DRAWTIME 
 
 int main(int argc, char *argv[])
 {
-  int token;
-  if(argc>1)
-  {
-    yyin = fopen(argv[1], "r");
-    if (yyin == NULL)
+    int c;
+    int token;
+    if(argc>1)
     {
-      perror("Error opening file");
-      return -1;
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
     }
-  }
-  yyparse();
-  fclose(yyin);
-  return 0;
+    if (yyin) {
+    while ((c = getc(yyin)) != EOF)
+        putchar(c);
+    }
+    printf("\n\n");
+    fclose(yyin);
+    if(argc>1)
+    {
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
+    }
+    yyparse();
+    fclose(yyin);
+    return 0;
 }

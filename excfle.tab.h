@@ -93,7 +93,8 @@ extern int yydebug;
     MINIMUMDISTRIBUTED = 294,      /* "minimumDistributed"  */
     COLUMNS = 295,                 /* "columns"  */
     WAGERS = 296,                  /* "wagers"  */
-    ADDON = 297                    /* "addOn"  */
+    ADDON = 297,                   /* "addOn"  */
+    INVALID_STRING = 298           /* "alpharithmetic without quotes"  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

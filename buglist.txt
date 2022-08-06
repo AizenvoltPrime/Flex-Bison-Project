@@ -21,3 +21,11 @@ obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote
                 OPEN_QUOTE OPEN_BRACKET sm_obj_elements CLOSE_QUOTE COMMA
 
                 op_quote OPEN_BRACKET sm_obj_elements cl_quote com arr_with_objects
+
+                22
+
+                if (yyin) {
+    while ((c = getc(yyin)) != EOF)
+        putchar(c);
+    }
+    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);

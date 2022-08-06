@@ -150,19 +150,20 @@ enum yysymbol_kind_t
   YYSYMBOL_COLUMNS = 40,                   /* "columns"  */
   YYSYMBOL_WAGERS = 41,                    /* "wagers"  */
   YYSYMBOL_ADDON = 42,                     /* "addOn"  */
-  YYSYMBOL_YYACCEPT = 43,                  /* $accept  */
-  YYSYMBOL_file = 44,                      /* file  */
-  YYSYMBOL_last = 45,                      /* last  */
-  YYSYMBOL_pricePoints = 46,               /* pricePoints  */
-  YYSYMBOL_winningNumbers = 47,            /* winningNumbers  */
-  YYSYMBOL_list = 48,                      /* list  */
-  YYSYMBOL_arr_element = 49,               /* arr_element  */
-  YYSYMBOL_bonus = 50,                     /* bonus  */
-  YYSYMBOL_prizeCategories = 51,           /* prizeCategories  */
-  YYSYMBOL_prizeCategoriesElems = 52,      /* prizeCategoriesElems  */
-  YYSYMBOL_wagerStatistics = 53,           /* wagerStatistics  */
-  YYSYMBOL_wagerStatisticsElems = 54,      /* wagerStatisticsElems  */
-  YYSYMBOL_active = 55                     /* active  */
+  YYSYMBOL_INVALID_STRING = 43,            /* "alpharithmetic without quotes"  */
+  YYSYMBOL_YYACCEPT = 44,                  /* $accept  */
+  YYSYMBOL_file = 45,                      /* file  */
+  YYSYMBOL_last = 46,                      /* last  */
+  YYSYMBOL_pricePoints = 47,               /* pricePoints  */
+  YYSYMBOL_winningNumbers = 48,            /* winningNumbers  */
+  YYSYMBOL_list = 49,                      /* list  */
+  YYSYMBOL_arr_element = 50,               /* arr_element  */
+  YYSYMBOL_bonus = 51,                     /* bonus  */
+  YYSYMBOL_prizeCategories = 52,           /* prizeCategories  */
+  YYSYMBOL_prizeCategoriesElems = 53,      /* prizeCategoriesElems  */
+  YYSYMBOL_wagerStatistics = 54,           /* wagerStatistics  */
+  YYSYMBOL_wagerStatisticsElems = 55,      /* wagerStatisticsElems  */
+  YYSYMBOL_active = 56                     /* active  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -493,7 +494,7 @@ union yyalloc
 #define YYLAST   159
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  43
+#define YYNTOKENS  44
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
@@ -502,7 +503,7 @@ union yyalloc
 #define YYNSTATES  134
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   297
+#define YYMAXUTOK   298
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -545,15 +546,15 @@ static const yytype_int8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42
+      35,    36,    37,    38,    39,    40,    41,    42,    43
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    60,    60,    61,    63,    65,    67,    69,    71,    72,
-      74,    76,    78,    79,    80,    81,    83,    85,    87
+       0,    61,    61,    62,    64,    66,    68,    70,    72,    73,
+      75,    77,    79,    80,    81,    82,    84,    86,    88
 };
 #endif
 
@@ -580,10 +581,10 @@ static const char *const yytname[] =
   "\"list\"", "\"bonus\"", "\"id\"", "\"divident\"", "\"winners\"",
   "\"distributed\"", "\"jackpot\"", "\"fixed\"", "\"categoryType\"",
   "\"gameType\"", "\"minimumDistributed\"", "\"columns\"", "\"wagers\"",
-  "\"addOn\"", "$accept", "file", "last", "pricePoints", "winningNumbers",
-  "list", "arr_element", "bonus", "prizeCategories",
-  "prizeCategoriesElems", "wagerStatistics", "wagerStatisticsElems",
-  "active", YY_NULLPTR
+  "\"addOn\"", "\"alpharithmetic without quotes\"", "$accept", "file",
+  "last", "pricePoints", "winningNumbers", "list", "arr_element", "bonus",
+  "prizeCategories", "prizeCategoriesElems", "wagerStatistics",
+  "wagerStatisticsElems", "active", YY_NULLPTR
 };
 
 static const char *
@@ -705,27 +706,27 @@ static const yytype_int16 yycheck[] =
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     6,    44,    16,     0,     6,    45,    18,    17,     9,
-       6,    55,     3,    18,     7,    19,     9,     9,     3,     3,
+       0,     6,    45,    16,     0,     6,    46,    18,    17,     9,
+       6,    56,     3,    18,     7,    19,     9,     9,     3,     3,
       19,    20,     9,     9,     3,     3,    20,    21,     9,    13,
        3,     3,    21,    22,    13,     9,     3,     3,    22,    23,
-       9,     9,     3,     3,    23,    24,     9,     6,    46,     3,
-      25,    26,    24,    10,     6,    47,    46,     7,    29,    27,
-      27,     3,     4,    48,     4,    51,    51,     9,    49,    30,
-       6,    52,    28,    28,     3,     5,     4,    50,    31,     5,
-       6,    53,    53,    49,     3,     9,     7,     9,     3,    40,
-      54,     7,     7,     5,     3,     3,     9,     7,     3,    32,
+       9,     9,     3,     3,    23,    24,     9,     6,    47,     3,
+      25,    26,    24,    10,     6,    48,    47,     7,    29,    27,
+      27,     3,     4,    49,     4,    52,    52,     9,    50,    30,
+       6,    53,    28,    28,     3,     5,     4,    51,    31,     5,
+       6,    54,    54,    50,     3,     9,     7,     9,     3,    40,
+      55,     7,     7,     5,     3,     3,     9,     7,     3,    32,
        3,    10,    41,     3,     9,    33,     3,     9,    42,     3,
       12,    34,    10,     3,    35,    10,     3,    36,    10,     3,
       37,     9,     3,    38,    13,     3,     7,    39,     3,    10,
-      52,     7,     3,    52
+      53,     7,     3,    53
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    43,    44,    44,    45,    46,    47,    48,    49,    49,
-      50,    51,    52,    52,    52,    52,    53,    54,    55
+       0,    44,    45,    45,    46,    47,    48,    49,    50,    50,
+      51,    52,    53,    53,    53,    53,    54,    55,    56
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1466,7 +1467,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1470 "excfle.tab.c"
+#line 1471 "excfle.tab.c"
 
       default: break;
     }
@@ -1690,22 +1691,38 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 89 "excfle.y"
+#line 90 "excfle.y"
 
 
 int main(int argc, char *argv[])
 {
-  int token;
-  if(argc>1)
-  {
-    yyin = fopen(argv[1], "r");
-    if (yyin == NULL)
+    int c;
+    int token;
+    if(argc>1)
     {
-      perror("Error opening file");
-      return -1;
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
     }
-  }
-  yyparse();
-  fclose(yyin);
-  return 0;
+    if (yyin) {
+    while ((c = getc(yyin)) != EOF)
+        putchar(c);
+    }
+    printf("\n\n");
+    fclose(yyin);
+    if(argc>1)
+    {
+        yyin = fopen(argv[1], "r");
+        if (yyin == NULL)
+        {
+            perror("Error opening file");
+            return -1;
+        }
+    }
+    yyparse();
+    fclose(yyin);
+    return 0;
 }
