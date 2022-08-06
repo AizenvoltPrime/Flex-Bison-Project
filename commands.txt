@@ -3,3 +3,13 @@ flex excfle.l
 gcc -o myParser.exe lex.yy.c -lfl
 gcc -o myParser.exe excfle.tab.c lex.yy.c -lfl
 ./myParser.exe test.json
+
+η εντολή bison -d excfle.y παράγει:
+excfle.tab.c
+excfle.tab.h
+
+η εντολή flex excfle.l παράγει:
+lex.yy.c
+
+
+

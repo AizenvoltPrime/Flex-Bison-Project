@@ -13,33 +13,33 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 %option noyywrap
 %option yylineno
 
-last                                \""last"\"
-active                              \""active"\"
-gameId                              \""gameId"\"
-drawId                              \""drawId"\"
-drawTime                            \""drawTime"\"
-status                              \""status"\"
-drawBreak                           \""drawBreak"\"
-visualDraw                          \""visualDraw"\"
-pricePoints                         \""pricePoints"\"
-amount                              \""amount"\"
-winningNumbers                      \""winningNumbers"\"
-prizeCategories                     \""prizeCategories"\"
-wagerStatistics                     \""wagerStatistics"\"
-list                                \""list"\"
-bonus                               \""bonus"\"
-id                                  \""id"\"
-divident                            \""divident"\"
-winners                             \""winners"\"
-distributed                         \""distributed"\"
-jackpot                             \""jackpot"\"
-fixed                               \""fixed"\"
-categoryType                        \""categoryType"\"
-gameType                            \""gameType"\"
-minimumDistributed                  \""minimumDistributed"\"
-columns                             \""columns"\"
-wagers                              \""wagers"\"
-addOn                               \""addOn"\"
+last                                \""last"\":
+active                              \""active"\":
+gameId                              \""gameId"\":
+drawId                              \""drawId"\":
+drawTime                            \""drawTime"\":
+status                              \""status"\":
+drawBreak                           \""drawBreak"\":
+visualDraw                          \""visualDraw"\":
+pricePoints                         \""pricePoints"\":
+amount                              \""amount"\":
+winningNumbers                      \""winningNumbers"\":
+prizeCategories                     \""prizeCategories"\":
+wagerStatistics                     \""wagerStatistics"\":
+list                                \""list"\":
+bonus                               \""bonus"\":
+id                                  \""id"\":
+divident                            \""divident"\":
+winners                             \""winners"\":
+distributed                         \""distributed"\":
+jackpot                             \""jackpot"\":
+fixed                               \""fixed"\":
+categoryType                        \""categoryType"\":
+gameType                            \""gameType"\":
+minimumDistributed                  \""minimumDistributed"\":
+columns                             \""columns"\":
+wagers                              \""wagers"\":
+addOn                               \""addOn"\":
 
 comma                               ","
 colon                               ":"
@@ -62,7 +62,6 @@ false_array_catch                   {open_quote}.*{close_quote}
 
 %%
 
-{colon}                             { print_token(COLON); return COLON; }
 {open_bracket}                      { print_token(OPEN_BRACKET); return OPEN_BRACKET; }
 {close_bracket}                     { print_token(CLOSE_BRACKET); return CLOSE_BRACKET; }
 {integer}                           { print_token(POS_INTEGER); return POS_INTEGER; }
