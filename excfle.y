@@ -53,7 +53,7 @@ extern void yyerror(const char *s);
 %token                              COLUMNS                             "columns"
 %token                              WAGERS                              "wagers"
 %token                              ADDON                               "addOn"
-%token                              INVALID_STRING                               "alpharithmetic without quotes"
+%token                              INVALID_STRING                      "alpharithmetic without quotes"
 
 
 %%

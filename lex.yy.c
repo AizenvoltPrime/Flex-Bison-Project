@@ -16903,7 +16903,7 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 298 "excfle.l"
-{return INVALID_STRING;}
+{ return INVALID_STRING; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
