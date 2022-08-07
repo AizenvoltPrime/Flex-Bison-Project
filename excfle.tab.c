@@ -123,33 +123,33 @@ enum yysymbol_kind_t
   YYSYMBOL_ANUM = 13,                      /* "alpharithmetic"  */
   YYSYMBOL_UNKNOWN = 14,                   /* "unknown"  */
   YYSYMBOL_EOL = 15,                       /* "end of line"  */
-  YYSYMBOL_LAST = 16,                      /* "last"  */
-  YYSYMBOL_ACTIVE = 17,                    /* "active"  */
-  YYSYMBOL_GAMEID = 18,                    /* "gameId"  */
-  YYSYMBOL_DRAWID = 19,                    /* "drawId"  */
-  YYSYMBOL_DRAWTIME = 20,                  /* "drawTime"  */
-  YYSYMBOL_STATUS = 21,                    /* "status"  */
-  YYSYMBOL_DRAWBREAK = 22,                 /* "drawBreak"  */
-  YYSYMBOL_VISUALDRAW = 23,                /* "visualDraw"  */
-  YYSYMBOL_PRICEPOINTS = 24,               /* "pricePoints"  */
-  YYSYMBOL_AMOUNT = 25,                    /* "amount"  */
-  YYSYMBOL_WINNINGNUMBERS = 26,            /* "winningNumbers"  */
-  YYSYMBOL_PRIZECATEGORIES = 27,           /* "prizeCategories"  */
-  YYSYMBOL_WAGERSTATISTICS = 28,           /* "wagerStatistics"  */
-  YYSYMBOL_LIST = 29,                      /* "list"  */
-  YYSYMBOL_BONUS = 30,                     /* "bonus"  */
-  YYSYMBOL_ID = 31,                        /* "id"  */
-  YYSYMBOL_DIVIDENT = 32,                  /* "divident"  */
-  YYSYMBOL_WINNERS = 33,                   /* "winners"  */
-  YYSYMBOL_DISTRIBUTED = 34,               /* "distributed"  */
-  YYSYMBOL_JACKPOT = 35,                   /* "jackpot"  */
-  YYSYMBOL_FIXED = 36,                     /* "fixed"  */
-  YYSYMBOL_CATEGORYTYPE = 37,              /* "categoryType"  */
-  YYSYMBOL_GAMETYPE = 38,                  /* "gameType"  */
-  YYSYMBOL_MINIMUMDISTRIBUTED = 39,        /* "minimumDistributed"  */
-  YYSYMBOL_COLUMNS = 40,                   /* "columns"  */
-  YYSYMBOL_WAGERS = 41,                    /* "wagers"  */
-  YYSYMBOL_ADDON = 42,                     /* "addOn"  */
+  YYSYMBOL_LAST = 16,                      /* "last:"  */
+  YYSYMBOL_ACTIVE = 17,                    /* "active:"  */
+  YYSYMBOL_GAMEID = 18,                    /* "gameId:"  */
+  YYSYMBOL_DRAWID = 19,                    /* "drawId:"  */
+  YYSYMBOL_DRAWTIME = 20,                  /* "drawTime:"  */
+  YYSYMBOL_STATUS = 21,                    /* "status:"  */
+  YYSYMBOL_DRAWBREAK = 22,                 /* "drawBreak:"  */
+  YYSYMBOL_VISUALDRAW = 23,                /* "visualDraw:"  */
+  YYSYMBOL_PRICEPOINTS = 24,               /* "pricePoints:"  */
+  YYSYMBOL_AMOUNT = 25,                    /* "amount:"  */
+  YYSYMBOL_WINNINGNUMBERS = 26,            /* "winningNumbers:"  */
+  YYSYMBOL_PRIZECATEGORIES = 27,           /* "prizeCategories:"  */
+  YYSYMBOL_WAGERSTATISTICS = 28,           /* "wagerStatistics:"  */
+  YYSYMBOL_LIST = 29,                      /* "list:"  */
+  YYSYMBOL_BONUS = 30,                     /* "bonus:"  */
+  YYSYMBOL_ID = 31,                        /* "id:"  */
+  YYSYMBOL_DIVIDENT = 32,                  /* "divident:"  */
+  YYSYMBOL_WINNERS = 33,                   /* "winners:"  */
+  YYSYMBOL_DISTRIBUTED = 34,               /* "distributed:"  */
+  YYSYMBOL_JACKPOT = 35,                   /* "jackpot:"  */
+  YYSYMBOL_FIXED = 36,                     /* "fixed:"  */
+  YYSYMBOL_CATEGORYTYPE = 37,              /* "categoryType:"  */
+  YYSYMBOL_GAMETYPE = 38,                  /* "gameType:"  */
+  YYSYMBOL_MINIMUMDISTRIBUTED = 39,        /* "minimumDistributed:"  */
+  YYSYMBOL_COLUMNS = 40,                   /* "columns:"  */
+  YYSYMBOL_WAGERS = 41,                    /* "wagers:"  */
+  YYSYMBOL_ADDON = 42,                     /* "addOn:"  */
   YYSYMBOL_INVALID_STRING = 43,            /* "alpharithmetic without quotes"  */
   YYSYMBOL_YYACCEPT = 44,                  /* $accept  */
   YYSYMBOL_file = 45,                      /* file  */
@@ -574,15 +574,16 @@ static const char *const yytname[] =
   "\"opening quote\"", "\"closing quote\"", "\"opening bracket\"",
   "\"closing bracket\"", "\"json number\"", "\"positive integer\"",
   "\"decimal number\"", "\"json string\"", "\"json array\"",
-  "\"alpharithmetic\"", "\"unknown\"", "\"end of line\"", "\"last\"",
-  "\"active\"", "\"gameId\"", "\"drawId\"", "\"drawTime\"", "\"status\"",
-  "\"drawBreak\"", "\"visualDraw\"", "\"pricePoints\"", "\"amount\"",
-  "\"winningNumbers\"", "\"prizeCategories\"", "\"wagerStatistics\"",
-  "\"list\"", "\"bonus\"", "\"id\"", "\"divident\"", "\"winners\"",
-  "\"distributed\"", "\"jackpot\"", "\"fixed\"", "\"categoryType\"",
-  "\"gameType\"", "\"minimumDistributed\"", "\"columns\"", "\"wagers\"",
-  "\"addOn\"", "\"alpharithmetic without quotes\"", "$accept", "file",
-  "last", "pricePoints", "winningNumbers", "list", "arr_element", "bonus",
+  "\"alpharithmetic\"", "\"unknown\"", "\"end of line\"", "\"last:\"",
+  "\"active:\"", "\"gameId:\"", "\"drawId:\"", "\"drawTime:\"",
+  "\"status:\"", "\"drawBreak:\"", "\"visualDraw:\"", "\"pricePoints:\"",
+  "\"amount:\"", "\"winningNumbers:\"", "\"prizeCategories:\"",
+  "\"wagerStatistics:\"", "\"list:\"", "\"bonus:\"", "\"id:\"",
+  "\"divident:\"", "\"winners:\"", "\"distributed:\"", "\"jackpot:\"",
+  "\"fixed:\"", "\"categoryType:\"", "\"gameType:\"",
+  "\"minimumDistributed:\"", "\"columns:\"", "\"wagers:\"", "\"addOn:\"",
+  "\"alpharithmetic without quotes\"", "$accept", "file", "last",
+  "pricePoints", "winningNumbers", "list", "arr_element", "bonus",
   "prizeCategories", "prizeCategoriesElems", "wagerStatistics",
   "wagerStatisticsElems", "active", YY_NULLPTR
 };
@@ -1467,7 +1468,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1471 "excfle.tab.c"
+#line 1472 "excfle.tab.c"
 
       default: break;
     }
