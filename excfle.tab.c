@@ -72,14 +72,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define YYSTYPE char *
 
 extern FILE *yyin;
 
 extern int yylex();
 extern void yyerror(const char *s);
 
-#line 83 "excfle.tab.c"
+#line 82 "excfle.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -574,9 +573,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    78,    78,    79,    80,    82,    83,    84,    86,    88,
-      89,    91,    93,    94,    96,    98,   100,   101,   102,   103,
-     105,   107,   109,   111,   113
+       0,    77,    77,    78,    79,    81,    82,    83,    85,    87,
+      88,    90,    92,    93,    95,    97,    99,   100,   101,   102,
+     104,   106,   108,   110,   112
 };
 #endif
 
@@ -1528,7 +1527,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1532 "excfle.tab.c"
+#line 1531 "excfle.tab.c"
 
       default: break;
     }
@@ -1752,7 +1751,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 115 "excfle.y"
+#line 114 "excfle.y"
 
 
 int main(int argc, char *argv[])

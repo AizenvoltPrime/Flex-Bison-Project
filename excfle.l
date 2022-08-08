@@ -2,7 +2,6 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
-#define YYSTYPE char *
 #include "excfle.tab.h"
 
 void minimumdist_error_check(int token);
@@ -160,7 +159,6 @@ false_array_catch                   {open_quote}.*{close_quote}
             if(position==length)
             {
                 elements_count++;
-                //printf("The number of elements is %d\n",elements_count);
                 correct_value=true;
                 break;
             }
@@ -171,7 +169,6 @@ false_array_catch                   {open_quote}.*{close_quote}
                 if(*insert==']')
                 {
                     elements_count++;
-                    //printf("The number of elements is %d\n",elements_count);
                     correct_value=true;
                     stop=1;
                     break;
@@ -179,7 +176,6 @@ false_array_catch                   {open_quote}.*{close_quote}
                 if(position==length)
                 {
                     elements_count++;
-                    //printf("The number of elements is %d\n",elements_count);
                     correct_value=true;
                     stop=1;
                     break;
@@ -201,7 +197,6 @@ false_array_catch                   {open_quote}.*{close_quote}
                 }
                 else
                 {
-                    //printf("ERROR\n");
                     stop=1;
                     break;
                 }
@@ -211,14 +206,6 @@ false_array_catch                   {open_quote}.*{close_quote}
                 break;
             }
             elements_count++;
-            if(inside_quotes_counter==0)
-            {
-                //printf("The string doesn't contains more strings\n");
-            }
-            else
-            {
-                //printf("The string contains more strings\n");
-            }
             if(!isdigit(*insert) && *insert=='\"')
             {
                 digit_block=1;
@@ -266,7 +253,6 @@ false_array_catch                   {open_quote}.*{close_quote}
             position++;
             if(position>length) //If the position is above length then the number entered is wrong.
             {
-                //printf("ERROR!!!!");
                 break;
             }
         }
@@ -379,8 +365,6 @@ void minimumdist_error_check(int token)
         addon_temp=yytext;
         temp_position[1]=token_counter;
     }
-    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
-    printf("Token counter is %d and temp_position is %d\n",token_counter,temp_position[1]);
 }
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
@@ -452,7 +436,6 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
             }
             else
             {
-                //printf("NUMBER ERROR!!!!");
                 return true;
             }
         }
@@ -500,13 +483,11 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
                 }
                 else
                 {
-                    //printf("NUMBER ERROR!!!!");
                     return true;
                 }
             }
             else
             {
-                //printf("NUMBER ERROR!!!!");
                 return true;
             }
         }
@@ -514,7 +495,6 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     if(*insert==']')
     {
         (*elements_count)++;
-        //printf("The number of elements is %d\n",*elements_count);
         *correct_value=true;
         return true;
     }
@@ -543,7 +523,6 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     }
     else
     {
-        //printf("NUMBER ERROR!!!!");
         return true;
     }
     return false;

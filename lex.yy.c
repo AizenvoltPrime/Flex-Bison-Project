@@ -16824,7 +16824,6 @@ char *yytext;
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
-#define YYSTYPE char *
 #include "excfle.tab.h"
 
 void minimumdist_error_check(int token);
@@ -16836,8 +16835,8 @@ int minim_temp=0;
 char* addon_temp;
 int temp_position[2]={0,0};
 bool integer_array=true;
+#line 16839 "lex.yy.c"
 #line 16840 "lex.yy.c"
-#line 16841 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -17054,10 +17053,10 @@ YY_DECL
 		}
 
 	{
-#line 86 "excfle.l"
+#line 85 "excfle.l"
 
 
-#line 17061 "lex.yy.c"
+#line 17060 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -17126,27 +17125,27 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 88 "excfle.l"
+#line 87 "excfle.l"
 { minimumdist_error_check(OPEN_BRACKET); return OPEN_BRACKET; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 89 "excfle.l"
+#line 88 "excfle.l"
 { minimumdist_error_check(CLOSE_BRACKET); return CLOSE_BRACKET; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 90 "excfle.l"
+#line 89 "excfle.l"
 { minimumdist_error_check(POS_INTEGER); return POS_INTEGER; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 91 "excfle.l"
+#line 90 "excfle.l"
 { minimumdist_error_check(LAST); return LAST; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 92 "excfle.l"
+#line 91 "excfle.l"
 {
     char *insert = yytext;
     int length = yyleng;
@@ -17218,7 +17217,6 @@ YY_RULE_SETUP
             if(position==length)
             {
                 elements_count++;
-                //printf("The number of elements is %d\n",elements_count);
                 correct_value=true;
                 break;
             }
@@ -17229,7 +17227,6 @@ YY_RULE_SETUP
                 if(*insert==']')
                 {
                     elements_count++;
-                    //printf("The number of elements is %d\n",elements_count);
                     correct_value=true;
                     stop=1;
                     break;
@@ -17237,7 +17234,6 @@ YY_RULE_SETUP
                 if(position==length)
                 {
                     elements_count++;
-                    //printf("The number of elements is %d\n",elements_count);
                     correct_value=true;
                     stop=1;
                     break;
@@ -17259,7 +17255,6 @@ YY_RULE_SETUP
                 }
                 else
                 {
-                    //printf("ERROR\n");
                     stop=1;
                     break;
                 }
@@ -17269,14 +17264,6 @@ YY_RULE_SETUP
                 break;
             }
             elements_count++;
-            if(inside_quotes_counter==0)
-            {
-                //printf("The string doesn't contains more strings\n");
-            }
-            else
-            {
-                //printf("The string contains more strings\n");
-            }
             if(!isdigit(*insert) && *insert=='\"')
             {
                 digit_block=1;
@@ -17324,7 +17311,6 @@ YY_RULE_SETUP
             position++;
             if(position>length) //If the position is above length then the number entered is wrong.
             {
-                //printf("ERROR!!!!");
                 break;
             }
         }
@@ -17353,142 +17339,142 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 296 "excfle.l"
+#line 282 "excfle.l"
 {yyerror("Wrong value in array!");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 297 "excfle.l"
+#line 283 "excfle.l"
 { minimumdist_error_check(OPEN_QUOTE); return OPEN_QUOTE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 298 "excfle.l"
+#line 284 "excfle.l"
 { minimumdist_error_check(CLOSE_QUOTE); return CLOSE_QUOTE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 299 "excfle.l"
+#line 285 "excfle.l"
 { minimumdist_error_check(COMMA); return COMMA; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 300 "excfle.l"
+#line 286 "excfle.l"
 { minimumdist_error_check(DECIMAL); return DECIMAL; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 301 "excfle.l"
+#line 287 "excfle.l"
 { minimumdist_error_check(ACTIVE); return ACTIVE; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 302 "excfle.l"
+#line 288 "excfle.l"
 { minimumdist_error_check(GAMEID); return GAMEID; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 303 "excfle.l"
+#line 289 "excfle.l"
 { minimumdist_error_check(DRAWID); return DRAWID; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 304 "excfle.l"
+#line 290 "excfle.l"
 { minimumdist_error_check(DRAWTIME); return DRAWTIME; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 305 "excfle.l"
+#line 291 "excfle.l"
 { minimumdist_error_check(STATUS); return STATUS; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 306 "excfle.l"
+#line 292 "excfle.l"
 { minimumdist_error_check(DRAWBREAK); return DRAWBREAK; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 307 "excfle.l"
+#line 293 "excfle.l"
 { minimumdist_error_check(VISUALDRAW); return VISUALDRAW; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 308 "excfle.l"
+#line 294 "excfle.l"
 { minimumdist_error_check(PRICEPOINTS); return PRICEPOINTS; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 309 "excfle.l"
+#line 295 "excfle.l"
 { minimumdist_error_check(AMOUNT); return AMOUNT; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 310 "excfle.l"
+#line 296 "excfle.l"
 { minimumdist_error_check(WINNINGNUMBERS); return WINNINGNUMBERS; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 311 "excfle.l"
+#line 297 "excfle.l"
 { minimumdist_error_check(PRIZECATEGORIES); return PRIZECATEGORIES; }                        
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 312 "excfle.l"
+#line 298 "excfle.l"
 { minimumdist_error_check(WAGERSTATISTICS); return WAGERSTATISTICS; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 313 "excfle.l"
+#line 299 "excfle.l"
 { minimumdist_error_check(LIST); return LIST; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 314 "excfle.l"
+#line 300 "excfle.l"
 { minimumdist_error_check(BONUS); return BONUS; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 315 "excfle.l"
+#line 301 "excfle.l"
 { minimumdist_error_check(ID); return ID; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 316 "excfle.l"
+#line 302 "excfle.l"
 { minimumdist_error_check(DIVIDENT); return DIVIDENT; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 317 "excfle.l"
+#line 303 "excfle.l"
 { minimumdist_error_check(WINNERS); return WINNERS; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 318 "excfle.l"
+#line 304 "excfle.l"
 { minimumdist_error_check(DISTRIBUTED); return DISTRIBUTED; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 319 "excfle.l"
+#line 305 "excfle.l"
 { minimumdist_error_check(JACKPOT); return JACKPOT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 320 "excfle.l"
+#line 306 "excfle.l"
 { minimumdist_error_check(FIXED); return FIXED; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 321 "excfle.l"
+#line 307 "excfle.l"
 { minimumdist_error_check(CATEGORYTYPE); return CATEGORYTYPE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 322 "excfle.l"
+#line 308 "excfle.l"
 { minimumdist_error_check(GAMETYPE); return GAMETYPE; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 323 "excfle.l"
+#line 309 "excfle.l"
 { 
         if(token_counter-22==temp_position[0] && minim_temp==1)
         {
@@ -17503,141 +17489,141 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 334 "excfle.l"
+#line 320 "excfle.l"
 { minimumdist_error_check(COLUMNS); return COLUMNS; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 335 "excfle.l"
+#line 321 "excfle.l"
 { minimumdist_error_check(WAGERS); return WAGERS; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 336 "excfle.l"
+#line 322 "excfle.l"
 { minimumdist_error_check(ADDON); return ADDON; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 337 "excfle.l"
+#line 323 "excfle.l"
 { minimumdist_error_check(CONTENT); return CONTENT; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 338 "excfle.l"
+#line 324 "excfle.l"
 { minimumdist_error_check(TOTALPAGES); return TOTALPAGES; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 339 "excfle.l"
+#line 325 "excfle.l"
 { minimumdist_error_check(TOTALELEMENTS); return TOTALELEMENTS; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 340 "excfle.l"
+#line 326 "excfle.l"
 { minimumdist_error_check(NUMBEROFELEMENTS); return NUMBEROFELEMENTS; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 341 "excfle.l"
+#line 327 "excfle.l"
 { minimumdist_error_check(SORT); return SORT; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 342 "excfle.l"
+#line 328 "excfle.l"
 { minimumdist_error_check(FIRST); return FIRST; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 343 "excfle.l"
+#line 329 "excfle.l"
 { minimumdist_error_check(SIZE); return SIZE; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 344 "excfle.l"
+#line 330 "excfle.l"
 { minimumdist_error_check(NUMBERTOKEN); return NUMBERTOKEN; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 345 "excfle.l"
+#line 331 "excfle.l"
 { minimumdist_error_check(DIRECTION); return DIRECTION; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 346 "excfle.l"
+#line 332 "excfle.l"
 { minimumdist_error_check(PROPERTY); return PROPERTY; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 347 "excfle.l"
+#line 333 "excfle.l"
 { minimumdist_error_check(IGNORECASE); return IGNORECASE; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 348 "excfle.l"
+#line 334 "excfle.l"
 { minimumdist_error_check(NULLHANDLING); return NULLHANDLING; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 349 "excfle.l"
+#line 335 "excfle.l"
 { minimumdist_error_check(DESCENDING); return DESCENDING; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 350 "excfle.l"
+#line 336 "excfle.l"
 { minimumdist_error_check(ASCENDING); return ASCENDING; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 351 "excfle.l"
+#line 337 "excfle.l"
 { minimumdist_error_check(BOOL); return BOOL; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 352 "excfle.l"
+#line 338 "excfle.l"
 { minimumdist_error_check(ANUM); return ANUM; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 353 "excfle.l"
+#line 339 "excfle.l"
 { minimumdist_error_check(CLASS_STRING); return CLASS_STRING; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 354 "excfle.l"
+#line 340 "excfle.l"
 { return INVALID_STRING; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 356 "excfle.l"
+#line 342 "excfle.l"
 { }
 	YY_BREAK
 case 56:
 /* rule 56 can match eol */
 YY_RULE_SETUP
-#line 357 "excfle.l"
+#line 343 "excfle.l"
 { }
 	YY_BREAK
 case 57:
 /* rule 57 can match eol */
 YY_RULE_SETUP
-#line 358 "excfle.l"
+#line 344 "excfle.l"
 { }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 359 "excfle.l"
+#line 345 "excfle.l"
 { yyerror("Unrecognized character!"); return UNKNOWN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 360 "excfle.l"
+#line 346 "excfle.l"
 { printf("File had no errors.\n"); return YYEOF; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 361 "excfle.l"
+#line 347 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 17641 "lex.yy.c"
+#line 17627 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -18652,7 +18638,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 361 "excfle.l"
+#line 347 "excfle.l"
 
 
 void yyerror(const char* error)
@@ -18674,8 +18660,6 @@ void minimumdist_error_check(int token)
         addon_temp=yytext;
         temp_position[1]=token_counter;
     }
-    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
-    printf("Token counter is %d and temp_position is %d\n",token_counter,temp_position[1]);
 }
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
@@ -18747,7 +18731,6 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
             }
             else
             {
-                //printf("NUMBER ERROR!!!!");
                 return true;
             }
         }
@@ -18795,13 +18778,11 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
                 }
                 else
                 {
-                    //printf("NUMBER ERROR!!!!");
                     return true;
                 }
             }
             else
             {
-                //printf("NUMBER ERROR!!!!");
                 return true;
             }
         }
@@ -18809,7 +18790,6 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     if(*insert==']')
     {
         (*elements_count)++;
-        //printf("The number of elements is %d\n",*elements_count);
         *correct_value=true;
         return true;
     }
@@ -18838,7 +18818,6 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     }
     else
     {
-        //printf("NUMBER ERROR!!!!");
         return true;
     }
     return false;
