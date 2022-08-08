@@ -11,21 +11,5 @@ Incorrect Values:
 [2.2E]
 [2.222E]
 
-
-
-obj_with_array: OPEN_BRACKET ANUM COLON OPEN_QUOTE arr_element cl_quote
-                | OPEN_BRACKET OPEN_QUOTE cl_quote cl_bracket
-                | ANUM COLON OPEN_QUOTE arr_element cl_quote
-                shift reduce problem
-
-                OPEN_QUOTE OPEN_BRACKET sm_obj_elements CLOSE_QUOTE COMMA
-
-                op_quote OPEN_BRACKET sm_obj_elements cl_quote com arr_with_objects
-
-                22
-
-                if (yyin) {
-    while ((c = getc(yyin)) != EOF)
-        putchar(c);
-    }
-    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
+Testing command:
+printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
