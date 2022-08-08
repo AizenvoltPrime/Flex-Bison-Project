@@ -9,9 +9,11 @@ void minimumdist_error_check(int token);
 void yyerror(const char* error);
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
 
-int temp=0;
 int token_counter=0;
-int temp_position=0;
+int minim_temp=0;
+char* addon_temp;
+int temp_position[2]={0,0};
+bool integer_array=true;
 %}
 
 %option noyywrap
@@ -45,6 +47,22 @@ columns                             \""columns"\":
 wagers                              \""wagers"\":
 addOn                               \""addOn"\":
 
+content                             \""content"\":
+totalPages                          \""totalPages"\":
+totalElements                       \""totalElements"\":
+numberOfElements                    \""numberOfElements"\":
+sort                                \""sort"\":
+first                               \""first"\":
+size                                \""size"\":
+numberToken                         \""number"\":
+direction                           \""direction"\":
+property                            \""property"\":
+ignoreCase                          \""ignoreCase"\":
+nullHandling                        \""nullHandling"\":
+descending                          \""descending"\":
+ascending                           \""ascending"\":
+bool                                "true"|"false"
+
 comma                               ","
 colon                               ":"
 open_bracket                        "{"
@@ -55,6 +73,7 @@ character                           [A-Za-z]
 digit                               [0-9]
 whitespace                          [ ]*
 string                              \"(([A-Za-z])|([0-9]))*\"
+class_string                        \"(([A-Za-z])|([0-9]))*\.(([A-Za-z])|([0-9]))*\"
 json_string                         \".*\"
 integer                             {digit}+
 decimal                             {integer}?\.{digit}*
@@ -91,8 +110,15 @@ false_array_catch                   {open_quote}.*{close_quote}
         }
         if(*insert==']')
         {
-            minimumdist_error_check(JSON_ARRAY);
-            return JSON_ARRAY;
+            if(token_counter!=temp_position[1])
+            {
+                minimumdist_error_check(ARRAY_INT); 
+                return ARRAY_INT;
+            }
+            else{
+                minimumdist_error_check(JSON_ARRAY); 
+                return JSON_ARRAY;
+            } 
         }
     }
     if(*insert=='\"')
@@ -100,11 +126,13 @@ false_array_catch                   {open_quote}.*{close_quote}
         *insert++;
         position++;
         digit_block=1;
+        integer_array=false;
     }
     while (1)
     {
         if(*insert=='\\') //Checking for strings inside string
         {
+            integer_array=false;
             *insert++;
             position++;
             if(*insert=='\"')
@@ -127,6 +155,7 @@ false_array_catch                   {open_quote}.*{close_quote}
         }
         if(*insert=='\"')
         {
+            integer_array=false;
             digit_block=0;
             if(position==length)
             {
@@ -211,6 +240,7 @@ false_array_catch                   {open_quote}.*{close_quote}
             i=position+1;
             if(*insert=='.')
             {
+                integer_array=false;
                 *insert++;
                 position++;
                 if(isdigit(*insert) || *insert == 'E' || *insert == 'e')
@@ -241,11 +271,21 @@ false_array_catch                   {open_quote}.*{close_quote}
             }
         }
     }
-    if(correct_value == true)
+    if(correct_value == true && integer_array==false && token_counter==temp_position[1])
     {
-        //printf("correct value\n");
+        integer_array=true;
         minimumdist_error_check(JSON_ARRAY);
         return JSON_ARRAY;
+    }
+    else if(correct_value == true && integer_array==true && token_counter==temp_position[1])
+    {
+        minimumdist_error_check(JSON_ARRAY);
+        return JSON_ARRAY;
+    }   
+    else if(correct_value == true && integer_array==true && token_counter!=temp_position[1])
+    {
+        minimumdist_error_check(ARRAY_INT);
+        return ARRAY_INT;
     }
     else
     {
@@ -281,7 +321,7 @@ false_array_catch                   {open_quote}.*{close_quote}
 {categoryType}                  { minimumdist_error_check(CATEGORYTYPE); return CATEGORYTYPE; }
 {gameType}                      { minimumdist_error_check(GAMETYPE); return GAMETYPE; }
 {minimumDistributed}            { 
-        if(token_counter-22==temp_position && temp==1)
+        if(token_counter-22==temp_position[0] && minim_temp==1)
         {
             minimumdist_error_check(MINIMUMDISTRIBUTED);
             return MINIMUMDISTRIBUTED; 
@@ -290,11 +330,27 @@ false_array_catch                   {open_quote}.*{close_quote}
         {
             yyerror("id of minimumDistributed is not 1");
         }
-    } 
+    }
 {columns}                       { minimumdist_error_check(COLUMNS); return COLUMNS; }
 {wagers}                        { minimumdist_error_check(WAGERS); return WAGERS; }
 {addOn}                         { minimumdist_error_check(ADDON); return ADDON; }
+{content}                       { minimumdist_error_check(CONTENT); return CONTENT; }
+{totalPages}                    { minimumdist_error_check(TOTALPAGES); return TOTALPAGES; }
+{totalElements}                 { minimumdist_error_check(TOTALELEMENTS); return TOTALELEMENTS; }
+{numberOfElements}              { minimumdist_error_check(NUMBEROFELEMENTS); return NUMBEROFELEMENTS; }
+{sort}                          { minimumdist_error_check(SORT); return SORT; }
+{first}                         { minimumdist_error_check(FIRST); return FIRST; }
+{size}                          { minimumdist_error_check(SIZE); return SIZE; }
+{numberToken}                   { minimumdist_error_check(NUMBERTOKEN); return NUMBERTOKEN; }
+{direction}                     { minimumdist_error_check(DIRECTION); return DIRECTION; }
+{property}                      { minimumdist_error_check(PROPERTY); return PROPERTY; }
+{ignoreCase}                    { minimumdist_error_check(IGNORECASE); return IGNORECASE; }
+{nullHandling}                  { minimumdist_error_check(NULLHANDLING); return NULLHANDLING; }
+{descending}                    { minimumdist_error_check(DESCENDING); return DESCENDING; }
+{ascending}                     { minimumdist_error_check(ASCENDING); return ASCENDING; }
+{bool}                          { minimumdist_error_check(BOOL); return BOOL; }
 {string}                        { minimumdist_error_check(ANUM); return ANUM; }
+{class_string}                  { minimumdist_error_check(CLASS_STRING); return CLASS_STRING; }
 {character}+                    { return INVALID_STRING; }
 
 [ \t] { }
@@ -315,9 +371,16 @@ void minimumdist_error_check(int token)
     token_counter++;
     if(atoi(yytext)==1)
     {
-        temp=atoi(yytext);
-        temp_position=token_counter;
+        minim_temp=atoi(yytext);
+        temp_position[0]=token_counter;
     }
+    else if(strcmp(yytext, "\"addOn\":")==0)
+    {
+        addon_temp=yytext;
+        temp_position[1]=token_counter;
+    }
+    printf("Token '%s' (%d) was found at line %d\n",yytext, token, yylineno);
+    printf("Token counter is %d and temp_position is %d\n",token_counter,temp_position[1]);
 }
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
@@ -340,6 +403,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     if(*insert=='E' || *insert=='e')
     {
         *scientific=true;
+        integer_array=false;
     }
     if((*insert=='E' || *insert=='e') && *scientific==true)
     {
@@ -466,6 +530,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
         }
         if(*insert=='\"')
         {
+            integer_array=false;
             *insert++;
             (*position)++;
             *digit_block=1;
@@ -473,6 +538,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     }
     else if(*insert=='.')
     {
+        integer_array=false;
         return false;
     }
     else

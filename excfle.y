@@ -20,9 +20,11 @@ extern void yyerror(const char *s);
 %token                              JSON_NUMBER                         "json number"
 %token                              POS_INTEGER                         "positive integer"
 %token                              DECIMAL                             "decimal number"
+%token                              ARRAY_INT                           "array with integers"
 %token                              JSON_STRING                         "json string"
 %token                              JSON_ARRAY                          "json array"
 %token                              ANUM                                "alpharithmetic"
+%token                              CLASS_STRING                        "property class string"
 %token                              UNKNOWN                             "unknown"
 %token                              EOL                                 "end of line"
 %token                              YYEOF                 0             "end of file"
@@ -53,26 +55,45 @@ extern void yyerror(const char *s);
 %token                              COLUMNS                             "columns:"
 %token                              WAGERS                              "wagers:"
 %token                              ADDON                               "addOn:"
+%token                              CONTENT                             "content:"
+%token                              TOTALPAGES                          "totalPages:"
+%token                              TOTALELEMENTS                       "totalElements:"
+%token                              NUMBEROFELEMENTS                    "numberOfElements:"
+%token                              SORT                                "sort:"
+%token                              FIRST                               "first:"
+%token                              SIZE                                "size:"
+%token                              NUMBERTOKEN                         "number:"
+%token                              DIRECTION                           "direction:"
+%token                              PROPERTY                            "property:"
+%token                              IGNORECASE                          "ignoreCase:"
+%token                              NULLHANDLING                        "nullHandling:"
+%token                              DESCENDING                          "descending:"
+%token                              ASCENDING                           "ascending:"
+%token                              BOOL                                "boolean"
 %token                              INVALID_STRING                      "alpharithmetic without quotes"
 
 
 %%
 
 file:       OPEN_BRACKET LAST last ACTIVE active CLOSE_BRACKET
+            | OPEN_BRACKET CONTENT content TOTALPAGES POS_INTEGER COMMA TOTALELEMENTS POS_INTEGER COMMA LAST BOOL COMMA NUMBEROFELEMENTS POS_INTEGER COMMA SORT sort FIRST BOOL COMMA SIZE POS_INTEGER COMMA NUMBERTOKEN POS_INTEGER CLOSE_BRACKET
             | %empty 
 
-last:    OPEN_BRACKET GAMEID POS_INTEGER COMMA DRAWID POS_INTEGER COMMA DRAWTIME POS_INTEGER COMMA STATUS ANUM COMMA DRAWBREAK POS_INTEGER COMMA VISUALDRAW POS_INTEGER COMMA PRICEPOINTS pricePoints WINNINGNUMBERS winningNumbers PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET COMMA
+last:    OPEN_BRACKET GAMEID POS_INTEGER COMMA DRAWID POS_INTEGER COMMA DRAWTIME POS_INTEGER COMMA STATUS ANUM COMMA DRAWBREAK POS_INTEGER COMMA VISUALDRAW POS_INTEGER COMMA PRICEPOINTS pricePoints WINNINGNUMBERS winningNumbers PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET COMMA last
+        | OPEN_BRACKET GAMEID POS_INTEGER COMMA DRAWID POS_INTEGER COMMA DRAWTIME POS_INTEGER COMMA STATUS ANUM COMMA DRAWBREAK POS_INTEGER COMMA VISUALDRAW POS_INTEGER COMMA PRICEPOINTS pricePoints WINNINGNUMBERS winningNumbers PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET COMMA
+        | OPEN_BRACKET GAMEID POS_INTEGER COMMA DRAWID POS_INTEGER COMMA DRAWTIME POS_INTEGER COMMA STATUS ANUM COMMA DRAWBREAK POS_INTEGER COMMA VISUALDRAW POS_INTEGER COMMA PRICEPOINTS pricePoints WINNINGNUMBERS winningNumbers PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET
 
 pricePoints: OPEN_BRACKET AMOUNT DECIMAL CLOSE_BRACKET COMMA
 
-winningNumbers: OPEN_BRACKET LIST list BONUS bonus CLOSE_BRACKET COMMA
+winningNumbers: OPEN_BRACKET LIST ARRAY_INT COMMA BONUS ARRAY_INT CLOSE_BRACKET COMMA
+                | OPEN_BRACKET LIST list BONUS bonus CLOSE_BRACKET COMMA
 
 list: OPEN_QUOTE arr_element CLOSE_QUOTE COMMA
 
-arr_element:    POS_INTEGER COMMA arr_element 
+arr_element:    POS_INTEGER COMMA arr_element
                 | POS_INTEGER
 
-bonus: OPEN_QUOTE POS_INTEGER CLOSE_QUOTE
+bonus:  OPEN_QUOTE arr_element CLOSE_QUOTE
 
 prizeCategories: OPEN_QUOTE prizeCategoriesElems CLOSE_QUOTE COMMA
 
@@ -86,6 +107,10 @@ wagerStatistics:  OPEN_BRACKET wagerStatisticsElems CLOSE_BRACKET
 wagerStatisticsElems: COLUMNS POS_INTEGER COMMA WAGERS POS_INTEGER COMMA ADDON JSON_ARRAY
 
 active: OPEN_BRACKET GAMEID POS_INTEGER COMMA DRAWID POS_INTEGER COMMA DRAWTIME POS_INTEGER COMMA STATUS ANUM COMMA DRAWBREAK POS_INTEGER COMMA VISUALDRAW POS_INTEGER COMMA PRICEPOINTS pricePoints PRIZECATEGORIES prizeCategories WAGERSTATISTICS wagerStatistics CLOSE_BRACKET
+
+content: OPEN_QUOTE last CLOSE_QUOTE COMMA
+
+sort: OPEN_QUOTE OPEN_BRACKET DIRECTION ANUM COMMA PROPERTY CLASS_STRING COMMA IGNORECASE BOOL COMMA NULLHANDLING ANUM COMMA DESCENDING BOOL COMMA ASCENDING BOOL CLOSE_BRACKET CLOSE_QUOTE COMMA
 
 %%
 
