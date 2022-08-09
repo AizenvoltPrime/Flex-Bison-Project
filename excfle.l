@@ -9,10 +9,15 @@ void yyerror(const char* error);
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
 
 int token_counter=0;
-int minim_temp=0;
+char* minim_temp;
 char* addon_temp;
-int temp_position[2]={0,0};
+int temp_position[3]={0,0,0};
+int id_position=0;
+int prize_object_counter=0;
+int prize_categories_counter=0;
+int prize_categories_position=0;
 bool integer_array=true;
+int count_of_id_1=0;
 %}
 
 %option noyywrap
@@ -86,7 +91,32 @@ false_array_catch                   {open_quote}.*{close_quote}
 
 {open_bracket}                      { minimumdist_error_check(OPEN_BRACKET); return OPEN_BRACKET; }
 {close_bracket}                     { minimumdist_error_check(CLOSE_BRACKET); return CLOSE_BRACKET; }
-{integer}                           { minimumdist_error_check(POS_INTEGER); return POS_INTEGER; }
+{integer}                           { 
+    if(token_counter==temp_position[2])
+    {
+        if( strcmp(yytext, "1100")==0 || strcmp(yytext, "1110")==0 ||
+            strcmp(yytext, "2100")==0 || strcmp(yytext, "2101")==0 ||
+            strcmp(yytext, "5103")==0 || strcmp(yytext, "5104")==0 ||
+            strcmp(yytext, "5106")==0)
+        {
+            minimumdist_error_check(POS_INTEGER); 
+            return POS_INTEGER; 
+        }
+        else
+        {
+            yyerror("Invalid gameId value!");
+        }
+    }
+    if(token_counter==temp_position[0])
+    {
+        if(strcmp(yytext, "1")==0)
+        {
+            count_of_id_1=prize_object_counter;
+        }
+    }
+    minimumdist_error_check(POS_INTEGER); 
+    return POS_INTEGER; 
+}
 {last}                              { minimumdist_error_check(LAST); return LAST; }
 {array_multi} {
     char *insert = yytext;
@@ -251,7 +281,7 @@ false_array_catch                   {open_quote}.*{close_quote}
         {
             *insert++;
             position++;
-            if(position>length) //If the position is above length then the number entered is wrong.
+            if(position>length) //If the position is above length then the number entered is invalid.
             {
                 break;
             }
@@ -275,17 +305,17 @@ false_array_catch                   {open_quote}.*{close_quote}
     }
     else
     {
-        yyerror("Wrong value in array!");
+        yyerror("Invalid value in array!");
     }
 }
 
-{false_array_catch}             {yyerror("Wrong value in array!");}
+{false_array_catch}             {yyerror("Invalid value in array!");}
 {open_quote}                    { minimumdist_error_check(OPEN_QUOTE); return OPEN_QUOTE; }
 {close_quote}                   { minimumdist_error_check(CLOSE_QUOTE); return CLOSE_QUOTE; }
 {comma}                         { minimumdist_error_check(COMMA); return COMMA; }
 {decimal}                       { minimumdist_error_check(DECIMAL); return DECIMAL; }
 {active}                        { minimumdist_error_check(ACTIVE); return ACTIVE; }
-{gameId}                        { minimumdist_error_check(GAMEID); return GAMEID; }
+{gameId}                        { prize_categories_counter++; minimumdist_error_check(GAMEID); return GAMEID; }
 {drawId}                        { minimumdist_error_check(DRAWID); return DRAWID; }
 {drawTime}                      { minimumdist_error_check(DRAWTIME); return DRAWTIME; }
 {status}                        { minimumdist_error_check(STATUS); return STATUS; }
@@ -294,11 +324,34 @@ false_array_catch                   {open_quote}.*{close_quote}
 {pricePoints}                   { minimumdist_error_check(PRICEPOINTS); return PRICEPOINTS; }
 {amount}                        { minimumdist_error_check(AMOUNT); return AMOUNT; }
 {winningNumbers}                { minimumdist_error_check(WINNINGNUMBERS); return WINNINGNUMBERS; }
-{prizeCategories}               { minimumdist_error_check(PRIZECATEGORIES); return PRIZECATEGORIES; }                        
+{prizeCategories}               { 
+    if(prize_categories_counter>1)
+    {
+        if(prize_object_counter>8)
+        {
+            printf("ERROR AT LINE %d - ERROR TYPE IS: prizeCategories contains more than 8 JSON objects, it must have exactly 8 JSON objects to be valid!\n",prize_categories_position);
+            exit(EXIT_FAILURE);
+        }
+        else if(prize_object_counter<8)
+        {
+            printf("ERROR AT LINE %d - ERROR TYPE IS: prizeCategories contains less than 8 JSON objects, it must have exactly 8 JSON objects to be valid!\n",prize_categories_position);
+            exit(EXIT_FAILURE);
+        }
+    }
+    prize_categories_position=yylineno;
+    prize_object_counter=0;
+    minimumdist_error_check(PRIZECATEGORIES); 
+    return PRIZECATEGORIES; 
+}                        
 {wagerStatistics}               { minimumdist_error_check(WAGERSTATISTICS); return WAGERSTATISTICS; }
 {list}                          { minimumdist_error_check(LIST); return LIST; }
 {bonus}                         { minimumdist_error_check(BONUS); return BONUS; }
-{id}                            { minimumdist_error_check(ID); return ID; }
+{id}                            { 
+    prize_object_counter++;
+    id_position=token_counter+1;
+    minimumdist_error_check(ID); 
+    return ID; 
+}
 {divident}                      { minimumdist_error_check(DIVIDENT); return DIVIDENT; }
 {winners}                       { minimumdist_error_check(WINNERS); return WINNERS; }
 {distributed}                   { minimumdist_error_check(DISTRIBUTED); return DISTRIBUTED; }
@@ -307,14 +360,15 @@ false_array_catch                   {open_quote}.*{close_quote}
 {categoryType}                  { minimumdist_error_check(CATEGORYTYPE); return CATEGORYTYPE; }
 {gameType}                      { minimumdist_error_check(GAMETYPE); return GAMETYPE; }
 {minimumDistributed}            { 
-        if(token_counter-22==temp_position[0] && minim_temp==1)
+        if(prize_object_counter==count_of_id_1)
         {
             minimumdist_error_check(MINIMUMDISTRIBUTED);
             return MINIMUMDISTRIBUTED; 
         }
         else
         {
-            yyerror("id of minimumDistributed is not 1");
+            printf("ERROR AT LINE %d - ERROR TYPE IS: id of minimumDistributed must be 1\n",yylineno-8);
+            exit(EXIT_FAILURE);
         }
     }
 {columns}                       { minimumdist_error_check(COLUMNS); return COLUMNS; }
@@ -355,15 +409,17 @@ void yyerror(const char* error)
 void minimumdist_error_check(int token)
 {
     token_counter++;
-    if(atoi(yytext)==1)
+    if(strcmp(yytext, "\"id\":")==0)
     {
-        minim_temp=atoi(yytext);
         temp_position[0]=token_counter;
     }
     else if(strcmp(yytext, "\"addOn\":")==0)
     {
-        addon_temp=yytext;
         temp_position[1]=token_counter;
+    }
+    else if(strcmp(yytext, "\"gameId\":")==0)
+    {
+        temp_position[2]=token_counter;
     }
 }
 
