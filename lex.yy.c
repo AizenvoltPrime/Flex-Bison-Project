@@ -17163,6 +17163,10 @@ YY_RULE_SETUP
         {
             count_of_id_1=prize_object_counter;
         }
+        else
+        {
+            count_of_id_1=0;
+        }
     }
     minimumdist_error_check(POS_INTEGER); 
     return POS_INTEGER; 
@@ -17170,12 +17174,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 120 "excfle.l"
+#line 124 "excfle.l"
 { minimumdist_error_check(LAST); return LAST; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 121 "excfle.l"
+#line 125 "excfle.l"
 {
     char *insert = yytext;
     int length = yyleng;
@@ -17369,82 +17373,82 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 312 "excfle.l"
+#line 316 "excfle.l"
 {yyerror("Invalid value in array!");}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 313 "excfle.l"
+#line 317 "excfle.l"
 { minimumdist_error_check(OPEN_QUOTE); return OPEN_QUOTE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 314 "excfle.l"
+#line 318 "excfle.l"
 { minimumdist_error_check(CLOSE_QUOTE); return CLOSE_QUOTE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 315 "excfle.l"
+#line 319 "excfle.l"
 { minimumdist_error_check(COMMA); return COMMA; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 316 "excfle.l"
+#line 320 "excfle.l"
 { minimumdist_error_check(DECIMAL); return DECIMAL; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 317 "excfle.l"
+#line 321 "excfle.l"
 { minimumdist_error_check(ACTIVE); return ACTIVE; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 318 "excfle.l"
+#line 322 "excfle.l"
 { prize_categories_counter++; minimumdist_error_check(GAMEID); return GAMEID; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 319 "excfle.l"
+#line 323 "excfle.l"
 { minimumdist_error_check(DRAWID); return DRAWID; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 320 "excfle.l"
+#line 324 "excfle.l"
 { minimumdist_error_check(DRAWTIME); return DRAWTIME; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 321 "excfle.l"
+#line 325 "excfle.l"
 { minimumdist_error_check(STATUS); return STATUS; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 322 "excfle.l"
+#line 326 "excfle.l"
 { minimumdist_error_check(DRAWBREAK); return DRAWBREAK; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 323 "excfle.l"
+#line 327 "excfle.l"
 { minimumdist_error_check(VISUALDRAW); return VISUALDRAW; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 324 "excfle.l"
+#line 328 "excfle.l"
 { minimumdist_error_check(PRICEPOINTS); return PRICEPOINTS; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 325 "excfle.l"
+#line 329 "excfle.l"
 { minimumdist_error_check(AMOUNT); return AMOUNT; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 326 "excfle.l"
+#line 330 "excfle.l"
 { minimumdist_error_check(WINNINGNUMBERS); return WINNINGNUMBERS; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 327 "excfle.l"
+#line 331 "excfle.l"
 { 
     if(prize_categories_counter>1)
     {
@@ -17467,67 +17471,66 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 346 "excfle.l"
+#line 350 "excfle.l"
 { minimumdist_error_check(WAGERSTATISTICS); return WAGERSTATISTICS; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 347 "excfle.l"
+#line 351 "excfle.l"
 { minimumdist_error_check(LIST); return LIST; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 348 "excfle.l"
+#line 352 "excfle.l"
 { minimumdist_error_check(BONUS); return BONUS; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 349 "excfle.l"
+#line 353 "excfle.l"
 { 
     prize_object_counter++;
-    id_position=token_counter+1;
     minimumdist_error_check(ID); 
     return ID; 
 }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 355 "excfle.l"
+#line 358 "excfle.l"
 { minimumdist_error_check(DIVIDENT); return DIVIDENT; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 356 "excfle.l"
+#line 359 "excfle.l"
 { minimumdist_error_check(WINNERS); return WINNERS; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 357 "excfle.l"
+#line 360 "excfle.l"
 { minimumdist_error_check(DISTRIBUTED); return DISTRIBUTED; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 358 "excfle.l"
+#line 361 "excfle.l"
 { minimumdist_error_check(JACKPOT); return JACKPOT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 359 "excfle.l"
+#line 362 "excfle.l"
 { minimumdist_error_check(FIXED); return FIXED; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 360 "excfle.l"
+#line 363 "excfle.l"
 { minimumdist_error_check(CATEGORYTYPE); return CATEGORYTYPE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 361 "excfle.l"
+#line 364 "excfle.l"
 { minimumdist_error_check(GAMETYPE); return GAMETYPE; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 362 "excfle.l"
+#line 365 "excfle.l"
 { 
         if(prize_object_counter==count_of_id_1)
         {
@@ -17543,141 +17546,141 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 374 "excfle.l"
+#line 377 "excfle.l"
 { minimumdist_error_check(COLUMNS); return COLUMNS; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 375 "excfle.l"
+#line 378 "excfle.l"
 { minimumdist_error_check(WAGERS); return WAGERS; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 376 "excfle.l"
+#line 379 "excfle.l"
 { minimumdist_error_check(ADDON); return ADDON; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 377 "excfle.l"
+#line 380 "excfle.l"
 { minimumdist_error_check(CONTENT); return CONTENT; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 378 "excfle.l"
+#line 381 "excfle.l"
 { minimumdist_error_check(TOTALPAGES); return TOTALPAGES; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 379 "excfle.l"
+#line 382 "excfle.l"
 { minimumdist_error_check(TOTALELEMENTS); return TOTALELEMENTS; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 380 "excfle.l"
+#line 383 "excfle.l"
 { minimumdist_error_check(NUMBEROFELEMENTS); return NUMBEROFELEMENTS; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 381 "excfle.l"
+#line 384 "excfle.l"
 { minimumdist_error_check(SORT); return SORT; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 382 "excfle.l"
+#line 385 "excfle.l"
 { minimumdist_error_check(FIRST); return FIRST; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 383 "excfle.l"
+#line 386 "excfle.l"
 { minimumdist_error_check(SIZE); return SIZE; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 384 "excfle.l"
+#line 387 "excfle.l"
 { minimumdist_error_check(NUMBERTOKEN); return NUMBERTOKEN; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 385 "excfle.l"
+#line 388 "excfle.l"
 { minimumdist_error_check(DIRECTION); return DIRECTION; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 386 "excfle.l"
+#line 389 "excfle.l"
 { minimumdist_error_check(PROPERTY); return PROPERTY; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 387 "excfle.l"
+#line 390 "excfle.l"
 { minimumdist_error_check(IGNORECASE); return IGNORECASE; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 388 "excfle.l"
+#line 391 "excfle.l"
 { minimumdist_error_check(NULLHANDLING); return NULLHANDLING; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 389 "excfle.l"
+#line 392 "excfle.l"
 { minimumdist_error_check(DESCENDING); return DESCENDING; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 390 "excfle.l"
+#line 393 "excfle.l"
 { minimumdist_error_check(ASCENDING); return ASCENDING; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 391 "excfle.l"
+#line 394 "excfle.l"
 { minimumdist_error_check(BOOL); return BOOL; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 392 "excfle.l"
+#line 395 "excfle.l"
 { minimumdist_error_check(ANUM); return ANUM; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 393 "excfle.l"
+#line 396 "excfle.l"
 { minimumdist_error_check(CLASS_STRING); return CLASS_STRING; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 394 "excfle.l"
+#line 397 "excfle.l"
 { return INVALID_STRING; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 396 "excfle.l"
+#line 399 "excfle.l"
 { }
 	YY_BREAK
 case 56:
 /* rule 56 can match eol */
 YY_RULE_SETUP
-#line 397 "excfle.l"
+#line 400 "excfle.l"
 { }
 	YY_BREAK
 case 57:
 /* rule 57 can match eol */
 YY_RULE_SETUP
-#line 398 "excfle.l"
+#line 401 "excfle.l"
 { }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 399 "excfle.l"
+#line 402 "excfle.l"
 { yyerror("Unrecognized character!"); return UNKNOWN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 400 "excfle.l"
+#line 403 "excfle.l"
 { printf("File had no errors.\n"); return YYEOF; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 401 "excfle.l"
+#line 404 "excfle.l"
 ECHO;
 	YY_BREAK
-#line 17681 "lex.yy.c"
+#line 17684 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -18692,7 +18695,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 401 "excfle.l"
+#line 404 "excfle.l"
 
 
 void yyerror(const char* error)

@@ -113,6 +113,10 @@ false_array_catch                   {open_quote}.*{close_quote}
         {
             count_of_id_1=prize_object_counter;
         }
+        else
+        {
+            count_of_id_1=0;
+        }
     }
     minimumdist_error_check(POS_INTEGER); 
     return POS_INTEGER; 
@@ -348,7 +352,6 @@ false_array_catch                   {open_quote}.*{close_quote}
 {bonus}                         { minimumdist_error_check(BONUS); return BONUS; }
 {id}                            { 
     prize_object_counter++;
-    id_position=token_counter+1;
     minimumdist_error_check(ID); 
     return ID; 
 }
