@@ -329,7 +329,8 @@
 					"jackpot":408261.16,
 					"fixed":0.0,
 					"categoryType":0,
-					"gameType":"Normal"
+					"gameType":"Normal",
+					"minimumDistributed":0.0
 				},
 				{
 					"id":2,
@@ -339,8 +340,7 @@
 					"jackpot":48247.33,
 					"fixed":0.0,
 					"categoryType":0,
-					"gameType":"Normal",
-					"minimumDistributed":0.0
+					"gameType":"Normal"
 				},
 				{
 					"id":3,
@@ -405,7 +405,7 @@
 			"wagerStatistics":{
 				"columns":1540071,
 				"wagers":283493,
-				"addOn":[2,2]
+				"addOn":[]
 			}
 		}
 	],
