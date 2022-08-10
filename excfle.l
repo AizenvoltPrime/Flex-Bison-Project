@@ -11,13 +11,17 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
 int token_counter=0;
 char* minim_temp;
 char* addon_temp;
-int temp_position[3]={0,0,0};
+int temp_position[4]={0,0,0,0};
 int id_position=0;
 int prize_object_counter=0;
 int prize_categories_counter=0;
 int prize_categories_position=0;
 bool integer_array=true;
 int count_of_id_1=0;
+int list_array[5]={0,0,0,0,0};
+int list_array_members_counter=0;
+char temp_list_number_holder[100];
+int temp_pos=0;
 %}
 
 %option noyywrap
@@ -116,6 +120,18 @@ false_array_catch                   {open_quote}.*{close_quote}
         else
         {
             count_of_id_1=0;
+        }
+        if( strcmp(yytext, "1")==0 || strcmp(yytext, "2")==0 ||
+            strcmp(yytext, "3")==0 || strcmp(yytext, "4")==0 ||
+            strcmp(yytext, "5")==0 || strcmp(yytext, "6")==0 ||
+            strcmp(yytext, "7")==0 || strcmp(yytext, "8")==0)
+        {
+            minimumdist_error_check(POS_INTEGER); 
+            return POS_INTEGER;
+        }
+        else
+        {
+            yyerror("id must be in range 1-8 to be valid!");
         }
     }
     minimumdist_error_check(POS_INTEGER); 
@@ -319,7 +335,7 @@ false_array_catch                   {open_quote}.*{close_quote}
 {comma}                         { minimumdist_error_check(COMMA); return COMMA; }
 {decimal}                       { minimumdist_error_check(DECIMAL); return DECIMAL; }
 {active}                        { minimumdist_error_check(ACTIVE); return ACTIVE; }
-{gameId}                        { prize_categories_counter++; minimumdist_error_check(GAMEID); return GAMEID; }
+{gameId}                        { minimumdist_error_check(GAMEID); return GAMEID; }
 {drawId}                        { minimumdist_error_check(DRAWID); return DRAWID; }
 {drawTime}                      { minimumdist_error_check(DRAWTIME); return DRAWTIME; }
 {status}                        { minimumdist_error_check(STATUS); return STATUS; }
@@ -329,25 +345,26 @@ false_array_catch                   {open_quote}.*{close_quote}
 {amount}                        { minimumdist_error_check(AMOUNT); return AMOUNT; }
 {winningNumbers}                { minimumdist_error_check(WINNINGNUMBERS); return WINNINGNUMBERS; }
 {prizeCategories}               { 
-    if(prize_categories_counter>1)
-    {
-        if(prize_object_counter>8)
-        {
-            printf("ERROR AT LINE %d - ERROR TYPE IS: prizeCategories contains more than 8 JSON objects, it must have exactly 8 JSON objects to be valid!\n",prize_categories_position);
-            exit(EXIT_FAILURE);
-        }
-        else if(prize_object_counter<8)
-        {
-            printf("ERROR AT LINE %d - ERROR TYPE IS: prizeCategories contains less than 8 JSON objects, it must have exactly 8 JSON objects to be valid!\n",prize_categories_position);
-            exit(EXIT_FAILURE);
-        }
-    }
+    prize_categories_counter++;
     prize_categories_position=yylineno;
-    prize_object_counter=0;
     minimumdist_error_check(PRIZECATEGORIES); 
     return PRIZECATEGORIES; 
 }                        
-{wagerStatistics}               { minimumdist_error_check(WAGERSTATISTICS); return WAGERSTATISTICS; }
+{wagerStatistics}               { 
+    if(prize_object_counter>8)
+    {
+        printf("ERROR AT LINE %d - ERROR TYPE IS: prizeCategories contains more than 8 JSON objects, it must have exactly 8 JSON objects to be valid!\n",prize_categories_position);
+        exit(EXIT_FAILURE);
+    }
+    else if(prize_object_counter<8)
+    {
+        printf("ERROR AT LINE %d - ERROR TYPE IS: prizeCategories contains less than 8 JSON objects, it must have exactly 8 JSON objects to be valid!\n",prize_categories_position);
+        exit(EXIT_FAILURE);
+    }
+    prize_object_counter=0;
+    minimumdist_error_check(WAGERSTATISTICS); 
+    return WAGERSTATISTICS;
+}
 {list}                          { minimumdist_error_check(LIST); return LIST; }
 {bonus}                         { minimumdist_error_check(BONUS); return BONUS; }
 {id}                            { 
@@ -424,6 +441,10 @@ void minimumdist_error_check(int token)
     {
         temp_position[2]=token_counter;
     }
+    else if(strcmp(yytext, "\"list\":")==0)
+    {
+        temp_position[3]=token_counter;
+    }
 }
 
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value)
@@ -431,9 +452,20 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     int digit_counter=0;
     while(isdigit(*insert))
     {
+        if(token_counter==temp_position[3])
+        {
+            temp_list_number_holder[temp_pos]=*insert;
+            temp_pos++;
+        }
         *insert++;
         (*position)++;
         digit_counter++;
+        if(!isdigit(*insert) && token_counter==temp_position[3])
+        {
+            printf("Temp list number hodler:%s\n",temp_list_number_holder);
+            memset(&temp_list_number_holder[0], 0, sizeof(temp_list_number_holder));
+            temp_pos=0;
+        }
     }
     if (isspace(*insert))
     {
