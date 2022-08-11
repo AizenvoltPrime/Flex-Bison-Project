@@ -9,19 +9,16 @@ void yyerror(const char* error);
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
 
 int token_counter=0;
-char* minim_temp;
-char* addon_temp;
 int temp_position[4]={0,0,0,0};
-int id_position=0;
 int prize_object_counter=0;
 int prize_categories_counter=0;
 int prize_categories_position=0;
 bool integer_array=true;
 int count_of_id_1=0;
-int list_array[5]={0,0,0,0,0};
-int list_array_members_counter=0;
 char temp_list_number_holder[100];
 int temp_pos=0;
+int list_token_line=0;
+int list_array_members_counter=0;
 %}
 
 %option noyywrap
@@ -366,7 +363,20 @@ false_array_catch                   {open_quote}.*{close_quote}
     return WAGERSTATISTICS;
 }
 {list}                          { minimumdist_error_check(LIST); return LIST; }
-{bonus}                         { minimumdist_error_check(BONUS); return BONUS; }
+{bonus}                         { 
+    if(list_array_members_counter==5)
+    {
+        list_token_line=temp_position[3];
+        list_array_members_counter=0;
+    }
+    else
+    {
+        printf("ERROR AT LINE %d - ERROR TYPE IS: List element must contain exactly 5 integers!\n",yylineno-1);
+        exit(EXIT_FAILURE);
+    }
+    minimumdist_error_check(BONUS); 
+    return BONUS; 
+}
 {id}                            { 
     prize_object_counter++;
     minimumdist_error_check(ID); 
@@ -444,6 +454,10 @@ void minimumdist_error_check(int token)
     else if(strcmp(yytext, "\"list\":")==0)
     {
         temp_position[3]=token_counter;
+        if(list_token_line==0)
+        {
+            list_token_line=temp_position[3];
+        }
     }
 }
 
@@ -462,7 +476,11 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
         digit_counter++;
         if(!isdigit(*insert) && token_counter==temp_position[3])
         {
-            printf("Temp list number hodler:%s\n",temp_list_number_holder);
+            list_array_members_counter++;
+            if(atoi(temp_list_number_holder)>45 || atoi(temp_list_number_holder)<1)
+            {
+                yyerror("List element values should be integers in the range of 1 to 45!");
+            }
             memset(&temp_list_number_holder[0], 0, sizeof(temp_list_number_holder));
             temp_pos=0;
         }
