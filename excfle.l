@@ -21,7 +21,6 @@ int list_token_line=0;
 int list_array_members_counter=0;
 int int_array_members_counter=0;
 int main_token=-1;
-int file_mode=0;//0 for last result 1 for range result
 int list_array_line=0;
 %}
 
@@ -72,6 +71,7 @@ descending                          \""descending"\":
 ascending                           \""ascending"\":
 bool                                "true"|"false"
 
+newline                             (\n|\r|\r\n)*
 comma                               ","
 colon                               ":"
 open_bracket                        "{"
@@ -80,7 +80,8 @@ open_quote                          "["
 close_quote                         "]"
 character                           [A-Za-z]
 digit                               [0-9]
-whitespace                          [ ]*
+whitespace                          [ ]*|\t*
+new_white                           ({whitespace}{newline}{whitespace})*
 string                              \"(([A-Za-z])|([0-9]))*\"
 class_string                        \"(([A-Za-z])|([0-9]))*\.(([A-Za-z])|([0-9]))*\"
 json_string                         \".*\"
@@ -88,9 +89,8 @@ integer                             {digit}+
 decimal                             {integer}?\.{digit}*
 scientific                          {decimal}[Ee][+-]?{integer}*
 number                              (-?{integer})|(-?{decimal})|(-?{scientific})
-comma_mult                          (({whitespace},{whitespace}{json_string})|({whitespace},{whitespace}{number}))*
-array_multi                         ({open_quote}{whitespace}(({json_string}{whitespace},{whitespace}{number}{comma_mult})|({number}{whitespace},{whitespace}{json_string}{comma_mult})|({number}{whitespace},{whitespace}{number}{comma_mult}))*{whitespace}{close_quote})|({open_quote}{whitespace}({json_string}|{number}){whitespace}{close_quote})
-false_array_catch                   {open_quote}.*{close_quote}
+comma_mult                          (({new_white},{new_white}{json_string})|({new_white},{new_white}{number}))*
+array_multi                         ({open_quote}{new_white}(({json_string}{new_white},{new_white}{number}{comma_mult})|({number}{new_white},{new_white}{json_string}{comma_mult})|({number}{new_white},{new_white}{number}{comma_mult}))*{new_white}{close_quote})|({open_quote}{new_white}({json_string}|{number}){new_white}{close_quote})
 
 %%
 
@@ -134,19 +134,6 @@ false_array_catch                   {open_quote}.*{close_quote}
         {
             yyerror("id must be in range 1-8 to be valid!");
         }
-    }
-    if(token_counter-1==temp_position[3] && file_mode==0)//This is for subquestion 3c
-    {
-        main_token=token_counter-1;
-    }
-    if(main_token==temp_position[3] && file_mode==0)
-    {
-        if(atoi(yytext)>45 || atoi(yytext)<1)
-        {
-            printf("ERROR AT LINE %d - ERROR TYPE IS: List element values should be integers in the range of 1 to 45!\n",list_array_line);
-            exit(EXIT_FAILURE); 
-        }
-        int_array_members_counter++;
     }
     minimumdist_error_check(POS_INTEGER); 
     return POS_INTEGER; 
@@ -343,7 +330,6 @@ false_array_catch                   {open_quote}.*{close_quote}
     }
 }
 
-{false_array_catch}             {yyerror("Invalid value in array!");}
 {open_quote}                    { minimumdist_error_check(OPEN_QUOTE); return OPEN_QUOTE; }
 {close_quote}                   { minimumdist_error_check(CLOSE_QUOTE); return CLOSE_QUOTE; }
 {comma}                         { minimumdist_error_check(COMMA); return COMMA; }
@@ -381,29 +367,15 @@ false_array_catch                   {open_quote}.*{close_quote}
 }
 {list}                          { minimumdist_error_check(LIST); return LIST; }
 {bonus}                         { 
-    if(list_array_members_counter==5 && file_mode==1)
+    if(list_array_members_counter==5)
     {
         list_token_line=temp_position[3];
         list_array_members_counter=0;
     }
-    else if(file_mode==1)
+    else
     {
         printf("ERROR AT LINE %d - ERROR TYPE IS: List element must contain exactly 5 integers!\n",yylineno-1);
         exit(EXIT_FAILURE);
-    }
-    if(file_mode==0)
-    {
-        main_token=0;
-        if(int_array_members_counter==5)
-        {
-            main_token=0;
-            int_array_members_counter=0;
-        }
-        else
-        {
-            printf("ERROR AT LINE %d - ERROR TYPE IS: List element must contain exactly 5 integers!\n",list_array_line);
-            exit(EXIT_FAILURE); 
-        }
     }
     minimumdist_error_check(BONUS); 
     return BONUS; 
@@ -435,7 +407,7 @@ false_array_catch                   {open_quote}.*{close_quote}
 {columns}                       { minimumdist_error_check(COLUMNS); return COLUMNS; }
 {wagers}                        { minimumdist_error_check(WAGERS); return WAGERS; }
 {addOn}                         { minimumdist_error_check(ADDON); return ADDON; }
-{content}                       { file_mode=1; minimumdist_error_check(CONTENT); return CONTENT; }
+{content}                       { minimumdist_error_check(CONTENT); return CONTENT; }
 {totalPages}                    { minimumdist_error_check(TOTALPAGES); return TOTALPAGES; }
 {totalElements}                 { minimumdist_error_check(TOTALELEMENTS); return TOTALELEMENTS; }
 {numberOfElements}              { minimumdist_error_check(NUMBEROFELEMENTS); return NUMBEROFELEMENTS; }
@@ -502,7 +474,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
     int digit_counter=0;
     while(isdigit(*insert))
     {
-        if(token_counter==temp_position[3] && file_mode==1)
+        if(token_counter==temp_position[3])
         {
             temp_list_number_holder[temp_pos]=*insert;
             temp_pos++;
@@ -510,7 +482,7 @@ bool number_validation(char *insert, int *position, int *elements_count, int *di
         *insert++;
         (*position)++;
         digit_counter++;
-        if(!isdigit(*insert) && token_counter==temp_position[3] && file_mode==1)
+        if(!isdigit(*insert) && token_counter==temp_position[3])
         {
             list_array_members_counter++;
             if(atoi(temp_list_number_holder)>45 || atoi(temp_list_number_holder)<1)
