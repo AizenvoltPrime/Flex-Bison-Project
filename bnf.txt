@@ -2,17 +2,16 @@
 
 <last> ::= <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <prizeCategories> <wagerStatistics> |
 		   <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <wagerStatistics> |
-		   <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <prizeCategories>
+		   <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <prizeCategories> |
+		   <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers>
 		   
 <gameId> ::= <posInteger>
 
-<posInteger> ::= <nonZero> | <nonZero> <integers>
+<posInteger> ::= <digits>
 
-<integers> ::= <integer> | <nonZero> <integers>
+<digits> ::= <digit> | <digit> <digits>
 
-<integer> ::= "0" | <nonZero>
-
-<nonZero> ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 <drawId> ::= <posInteger>
 
@@ -20,7 +19,7 @@
 
 <status> ::= '"' <string> '"'
 
-<string> ::= <character> | <integer> | <character> <string> | <integer> <string>
+<string> ::= <character> | <posInteger> | <character> <string> | <posInteger> <string>
 
 <character> ::= "A" | "B" | "C" | ... | "Z" | "a" | "b" | "c" | ... | "z"
 
@@ -32,35 +31,34 @@
 
 <amount> ::= <realNumber>
 
-<realNumber> ::= <integers> "." <decimal> | <posInteger>
+<realNumber> ::= <posInteger> "." <decimal> | <posInteger>
 
-<decimal> ::= <nonZero> | <integer> <decimal>
+<decimal> ::= <posInteger> "." <posInteger>
 
 <winningNumbers> ::= "{" <list> "," <bonus> "}"
 
-<list> ::= "[" <integers> "," <list> | <integer> "]"
+<list> ::= "[" <posInteger> "," <list> | <posInteger> "]"
 
 <bonus> ::= "[" <posInteger> "]"
 
 <active> ::= <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <prizeCategories> <wagerStatistics> |
 			 <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <wagerStatistics> |
-			 <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <prizeCategories>
+			 <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <prizeCategories> |
+			 <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints>
 			 
-<prizeCategories> ::= "[" "{" <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> <minimumDistributed> "},{"
-						      <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "},{"
-							  <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "},{"
-							  <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "},{"
-							  <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "},{"
-							  <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "},{"
-							  <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "},{"
-							  <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> "}" 
-						"]"
-							  
+<prizeCategories> ::= "[" "{" <prizeCategoriesElement "}," <prizeCategories> |
+					  "{" <prizeCategoriesElement> "}," |
+					  "{" <prizeCategoriesElement> "}" "]"
+					
+
+<prizeCategoriesElement> ::= <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType> <minimumDistributed> |
+							 <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType>
+					   
 <id> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
 <divident> ::= <realNumber>
 
-<winners> ::= <integer>
+<winners> ::= <posInteger>
 
 <distributed> ::= <realNumber>
 
@@ -76,12 +74,70 @@ categoryType> ::= 0 | 1
 
 <wagerStatistics> ::= "{" <columns> <wagers> <addOn> "}"
 
-<columns> ::= <integer>
+<columns> ::= <posInteger>
 
-<wagers> ::= <integer>
+<wagers> ::= <posInteger>
 
 <addOn> ::= <JSONArray>
 
 <JSONArray> ::= "[" <element> "]"
 
 <element> ::= <string> "," <element> | <integer> "," <element> | <string> | <integer>
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+<content> ::= "[" "{" <gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <prizeCategories> <wagerStatistics> "}," |
+						<gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <prizeCategories> <wagerStatistics> "}," |
+						<gameId> <drawId> <drawTime> <status> <drawBreak> <visualDraw> <pricePoints> <winningNumbers> <prizeCategories> <wagerStatistics> "}" "]"
+						
+<totalPages> ::= <posInteger>
+
+<totalElements> ::= <posInteger>
+
+<last> ::= <boolean>
+
+<boolean> ::= true | false
+
+<numberOfElements> ::= <posInteger>
+
+<sort> ::= "[" "{" <direction> <property> <ignoreCase> <nullHandling> <descending> <ascending> "}" "]"
+
+<direction> ::= <string>
+
+<property> ::= <classString>
+
+<classString> ::= <string>"."<string>
+
+<ignoreCase> ::= <boolean>
+
+<nullHandling> ::= <string>
+
+<descending> ::= <boolean>
+
+<ascending> ::= <boolean>
+
+<first> ::= <boolean>
+
+<size> ::= <posInteger>
+
+<number> ::= <posInteger>
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+<gameId> ::= 1100 | 1110 | 2100 | 2101 | 5103 | 5104 | 5106
+
+<prizeCategories> ::= "[" "{" <prizeCategoriesElement "}," <prizeCategories> |
+					  "{" <prizeCategoriesElement> "}," |
+					  "{" <prizeCategoriesElement> "}" "]"
+					
+
+<prizeCategoriesElement> ::= <id> <divident> <winners> <distributed> <jackpot> <fixed> <categoryType> <gameType>
+
+<list> ::= "[" <posListInteger> "," <posListInteger> "," <posListInteger> "," <posListInteger> "," <posListInteger> "]"
+
+<posListInteger> ::= 1 | 2 | 3 | ... | 43 | 44 | 45
