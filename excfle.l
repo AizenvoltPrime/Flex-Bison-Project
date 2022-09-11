@@ -9,7 +9,7 @@ void yyerror(const char* error);
 bool number_validation(char *insert, int *position, int *elements_count, int *digit_block, bool *scientific, bool *correct_value);
 
 int token_counter=0;
-int temp_position[5]={0,0,0,0,0};
+int temp_position[4]={0,0,0,0};
 int prize_object_counter=0;
 int prize_categories_counter=0;
 int prize_categories_position=0;
@@ -19,9 +19,6 @@ char temp_list_number_holder[100];
 int temp_pos=0;
 int list_token_line=0;
 int list_array_members_counter=0;
-int int_array_members_counter=0;
-int main_token=-1;
-int list_array_line=0;
 %}
 
 %option noyywrap
@@ -461,11 +458,6 @@ void minimumdist_error_check(int token)
         {
             list_token_line=temp_position[3];
         }
-        list_array_line=yylineno;
-    }
-    else if(strcmp(yytext, "\"bonus\":")==0)
-    {
-        temp_position[4]=token_counter;
     }
 }
 
