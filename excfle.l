@@ -19,6 +19,8 @@ char temp_list_number_holder[100];
 int temp_pos=0;
 int list_token_line=0;
 int list_array_members_counter=0;
+int id_line=-1;
+int list_line=-1;
 %}
 
 %option noyywrap
@@ -371,7 +373,7 @@ array_multi                         ({open_quote}{new_white}(({json_string}{new_
     }
     else
     {
-        printf("ERROR AT LINE %d - ERROR TYPE IS: List element must contain exactly 5 integers!\n",yylineno-1);
+        printf("ERROR AT LINE %d - ERROR TYPE IS: List element must contain exactly 5 integers!\n",list_line);
         exit(EXIT_FAILURE);
     }
     minimumdist_error_check(BONUS); 
@@ -397,7 +399,7 @@ array_multi                         ({open_quote}{new_white}(({json_string}{new_
         }
         else
         {
-            printf("ERROR AT LINE %d - ERROR TYPE IS: id of minimumDistributed must be 1\n",yylineno-8);
+            printf("ERROR AT LINE %d - ERROR TYPE IS: id of minimumDistributed must be 1\n",id_line);
             exit(EXIT_FAILURE);
         }
     }
@@ -442,6 +444,7 @@ void minimumdist_error_check(int token)
     if(strcmp(yytext, "\"id\":")==0)
     {
         temp_position[0]=token_counter;
+        id_line=yylineno;
     }
     else if(strcmp(yytext, "\"addOn\":")==0)
     {
@@ -458,6 +461,7 @@ void minimumdist_error_check(int token)
         {
             list_token_line=temp_position[3];
         }
+        list_line=yylineno;
     }
 }
 
